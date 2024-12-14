@@ -47,7 +47,7 @@ n皇后问题
 需要严格递增序列
 ##### 二分查找
 - 不确定有无的寻找
-```
+```cpp
 int binary_search(int arr[], int n, int left, int right)
 {
     int mid = left + (right - left) / 2;
@@ -72,7 +72,7 @@ int binary_search(int arr[], int n, int left, int right)
 }
 ```
 - 寻找第一个大于等于的
-```
+```cpp
 int lowerbound(int A[], int x, int left, int right)
 {
     int mid;
@@ -95,7 +95,7 @@ int lowerbound(int A[], int x, int left, int right)
 ```
 
 - 寻找第一个大于的
-```
+```cpp
 int upperbound(int A[], int x, int left, int right)
 {
     int mid;
@@ -116,7 +116,7 @@ int upperbound(int A[], int x, int left, int right)
 ```
 ##### 二分夹逼
 ##### 快速幂
-```
+```cpp
 typedef long long LL
 LL binaryPow(LL a, LL b, LL m)
 {
@@ -132,7 +132,7 @@ LL binaryPow(LL a, LL b, LL m)
 }
 ```
 迭代写法
-```
+```cpp
 typedef long long LL
 LL binaryPow(LL a, LL b, LL m)
 {
@@ -155,7 +155,7 @@ LL binaryPow(LL a, LL b, LL m)
 ### Two Pointer 
 单调递增的数组
 ##### 寻找和为m的组合
-```
+```cpp
 while(i<j)
 {
     if (a[i] + a[j] == m)
@@ -170,7 +170,7 @@ while(i<j)
 }
 ```
 ##### 2-路归并排序
-```
+```cpp
 const int maxn = 100;
 void merge(int A[],int l1, int l2,int r1,int r2)
 {
@@ -204,7 +204,7 @@ void merge(int A[],int l1, int l2,int r1,int r2)
 
 ```
 非递归实现
-```
+```cpp
 void mergeSort(int A[])
 {
     for (int step = 2; step / 2 <= n; step*=2){
@@ -225,7 +225,7 @@ void mergeSort(int A[])
 - A[left] <= tmp, left++,如果A[left]>tmp;A[right] = A[left]
 - left == right A[left]=tmp;
 
-```
+```cpp
 int partition(int A[], int left, int right)
 {
     int temp = A[left];
