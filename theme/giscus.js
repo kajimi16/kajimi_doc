@@ -7,34 +7,6 @@ if (themeClass.indexOf("light") != -1 || themeClass.indexOf("rust") != -1) {
 // 设定默认的语言
 var giscus_lang = "zh-CN";
 
-// 获取用户使用的语种。
-var lang = translate.language.getCurrent();
-switch (lang) {
-  case "chinese_traditional":
-    giscus_lang = "zh-TW";
-    break;
-  case "english":
-    giscus_lang = "en";
-    break;
-  case "spanish":
-    giscus_lang = "es";
-    break;
-  case "japanese":
-    giscus_lang = "ja";
-    break;
-  case "korean":
-    giscus_lang = "ko";
-    break;
-  case "french":
-    giscus_lang = "fr";
-    break;
-  case "arabic":
-    giscus_lang = "ar";
-    break;
-  default:
-    giscus_lang = "zh-CN";
-    break;
-}
 
 // 插入评论区脚本元素
 var giscus = function () {
