@@ -1,0 +1,305 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+
+<head>
+    <!-- Book generated using mdBook -->
+    <meta charset="UTF-8">
+    <title>12月 - KAJIMI_BOOK</title>
+
+
+    <!-- Custom HTML head -->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="icon" href="../../favicon.svg">
+    <link rel="shortcut icon" href="../../favicon.png">
+    <link rel="stylesheet" href="../../css/variables.css">
+    <link rel="stylesheet" href="../../css/general.css">
+    <link rel="stylesheet" href="../../css/chrome.css">
+    <link rel="stylesheet" href="../../css/print.css" media="print">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../../fonts/fonts.css">
+
+    <!-- Highlight.js Stylesheets -->
+    <link rel="stylesheet" href="../../highlight.css">
+    <link rel="stylesheet" href="../../tomorrow-night.css">
+    <link rel="stylesheet" href="../../ayu-highlight.css">
+
+    <!-- Custom theme stylesheets -->
+
+
+    <!-- Provide site root to javascript -->
+    <script>
+        var path_to_root = "../../";
+        var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+    </script>
+    <!-- Start loading toc.js asap -->
+    <script src="../../toc.js"></script>
+</head>
+
+<body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch (e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch (e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor"
+                            title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                            aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme"
+                            aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)"
+                            aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S"
+                            aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">KAJIMI_BOOK</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..."
+                            aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="12月"><a class="header" href="#12月">12月</a></h1>
+<h3 id="12月1日"><a class="header" href="#12月1日">12月1日</a></h3>
+<p>卡基米日记21
+今天早上因为运气不好参加了运动会的观影，遂进行了音游的打
+今天下午参加了和旮旯p的音趴，顺便来了首费大给他们开开耳。非常的好玩，非常有氛围，反正我玩爽了
+晚上回来进行了游戏的打，我认为这是一个具有示范性的完美的周末</p>
+<h3 id="12月2日"><a class="header" href="#12月2日">12月2日</a></h3>
+<p>卡基米日记22
+今天爽睡觉，从中午回宿舍睡到4点半起床
+arc的葡萄糖了0.09（7.95-&gt;8.04），舒服了
+晚上化学实验合成阿司匹林有点神秘，搅拌了30分钟，最后合成了1.6g</p>
+<h3 id="12月3日"><a class="header" href="#12月3日">12月3日</a></h3>
+<p>卡基米日记23
+今天练习了4小时枪法，太充实
+至于考试，我祝周天的卡基米幸福。</p>
+<h3 id="12月4日"><a class="header" href="#12月4日">12月4日</a></h3>
+<p>卡基米日记24
+今天是我高中的学号篇日记
+晚上我的耳机到货了，一个有线头戴式，一个有音游模式的蓝牙耳机，非常神奇，体感0延迟
+今天晚上和朋友出去吃了自助烤肉，太舒适。</p>
+<h3 id="12月5日"><a class="header" href="#12月5日">12月5日</a></h3>
+<p>卡基米日记25
+玩无限暖暖忘记写日记了
+好困，晚安了家人们</p>
+<h3 id="12月6日"><a class="header" href="#12月6日">12月6日</a></h3>
+<p>卡基米日记26
+丸辣 全都丸辣
+该去哪里，我们的膝盖
+还有1天就考试了，只能早睡早起保存体力了</p>
+<h3 id="12月7日"><a class="header" href="#12月7日">12月7日</a></h3>
+<p>卡基米日记27
+今天去看了夜一乐队的一周年live
+刚开始还以为到了什么工业园
+结果live还是很棒的
+你怎么知道我拿到了拨片
+因为明天考试，不多说
+没有复习，让明天的卡基米好好享受收起</p>
+<h3 id="12月8日"><a class="header" href="#12月8日">12月8日</a></h3>
+<p>卡基米日记28
+今天去参加了南科大的星奏纪夜，太爽
+听到了我喜欢的影色舞，more jump more，还有xxx。
+前半段非常高雅的音乐（？），其实是表现形式高雅，有许多实力强劲的钢琴
+后半段有一堆乐队表演，都是超级大神啊，给我溜晕过去了。
+当然说到后半场，就不得不提台下的家虎队，我现在就要看到神人视角
+被挤在第二排，不敢大胆挥棒子，但是玩得非常开心，就是不知道为什么后面一直闪光（憋笑
+哦对了，关注雪璇夜巡乐队喵，蟹蟹喵</p>
+<h3 id="12月9日"><a class="header" href="#12月9日">12月9日</a></h3>
+<p>卡基米日记29
+ohno，差点忘记写日记了
+什么，你在等下文，没有下文了，今天睡了一天</p>
+<h3 id="12月10日"><a class="header" href="#12月10日">12月10日</a></h3>
+<p>卡基米日记30
+今天QQ使用时长10小时，无敌了
+其他时间不是睡觉就是看b站
+太怠惰了</p>
+<h3 id="12月11日"><a class="header" href="#12月11日">12月11日</a></h3>
+<p>卡基米日记31
+ohno，今天上午体测，成功把身体搞坏了
+晚上看csapp和rust语言圣经，把脑子搞坏了
+所以写不动日记了</p>
+<h3 id="12月12日"><a class="header" href="#12月12日">12月12日</a></h3>
+<p>卡基米日记32
+恭喜卡基米日记突破31天
+被四级英语作业硬控到现在
+今天玩的很舒服，看了点csapp的内容，感觉有点理解指针这东西和cast的强大之处了
+晚上还有混子请吃饭，中午有疯狂星期四吃，太幸福了</p>
+<h3 id="12月13日"><a class="header" href="#12月13日">12月13日</a></h3>
+<p>卡基米日记33
+明天四级，没空写，睡了</p>
+<h3 id="12月14日"><a class="header" href="#12月14日">12月14日</a></h3>
+<h3 id="12月15日"><a class="header" href="#12月15日">12月15日</a></h3>
+<h3 id="12月16日"><a class="header" href="#12月16日">12月16日</a></h3>
+<h3 id="12月17日"><a class="header" href="#12月17日">12月17日</a></h3>
+<h3 id="12月18日"><a class="header" href="#12月18日">12月18日</a></h3>
+<h3 id="12月19日"><a class="header" href="#12月19日">12月19日</a></h3>
+<h3 id="12月20日"><a class="header" href="#12月20日">12月20日</a></h3>
+<h3 id="12月21日"><a class="header" href="#12月21日">12月21日</a></h3>
+<h3 id="12月22日"><a class="header" href="#12月22日">12月22日</a></h3>
+<h3 id="12月23日"><a class="header" href="#12月23日">12月23日</a></h3>
+<h3 id="12月24日"><a class="header" href="#12月24日">12月24日</a></h3>
+<h3 id="12月25日"><a class="header" href="#12月25日">12月25日</a></h3>
+<h3 id="12月26日"><a class="header" href="#12月26日">12月26日</a></h3>
+<h3 id="12月27日"><a class="header" href="#12月27日">12月27日</a></h3>
+<h3 id="12月28日"><a class="header" href="#12月28日">12月28日</a></h3>
+<h3 id="12月29日"><a class="header" href="#12月29日">12月29日</a></h3>
+<h3 id="12月30日"><a class="header" href="#12月30日">12月30日</a></h3>
+<h3 id="12月31日"><a class="header" href="#12月31日">12月31日</a></h3>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <a rel="prev" href="../../dairy/november/2411.html" class="mobile-nav-chapters previous"
+                            title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                    <main>
+                        <hr>
+                        <div id="giscus-container"></div>
+                    </main>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                <a rel="prev" href="../../dairy/november/2411.html" class="nav-chapters previous" title="Previous chapter"
+                    aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../theme/giscus.js"></script>
+
+
+    </div>
+</body>
+
+</html>
