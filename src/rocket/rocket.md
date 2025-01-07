@@ -53,7 +53,7 @@ rocket把从request到response的过程分成了几个步骤（lifecycle）：
 （A handler is simply a function that takes an arbitrary number of arguments and returns any arbitrary type. handler 是一个接受任意数量参数并返回任意类型的函数。） 
 那么结合上面的代码我们就可以知道如下代码起到路由声明的作用
 ```rust
-#[get("/")]                   // <- route attribute 路由分发
+#[get("/")]                   // <- route attribute 路由属性
 fn index() -> &'static str {  // <- request handler 请求函数
     "hello, world!"
 }
@@ -89,3 +89,5 @@ fn rocket() -> _ {
 
 #### Futures and Async
 ***看不懂说是***
+
+写于2025年1月7日19:06:44
