@@ -1,6 +1,9 @@
 # Summary
 
-- [Chapter 1](./chapter_1.md)
+- [算法笔记](./chapter_1.md)
+- [CSAPP学习记录](./CSAPP/chapter0.md)
+  - [计算机系统漫游](./CSAPP/chapter1.md)
+- [rocket_web框架](./rocket/rocket.md)
 - [化学笔记](./chemical_speed_run.md)
 - [日记](./dairy/start.md)
   - [11月](./dairy/november/2411.md)
