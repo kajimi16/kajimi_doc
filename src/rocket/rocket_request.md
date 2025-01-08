@@ -149,3 +149,6 @@ fn admin_panel_redirect() -> Redirect {
 而如果前两个函数没有任何一个成功，就会转发到admin_panel_redirect路由，因为它没有请求守卫，所以它可以100%成功地把失败的请求转发到login路由。 
 #### Fallible Guards
 ***错误处理这块施工中，看得不是很懂***
+
+### Cookies
+CookieJar结构体是一种对多个cookie进行增改删的玩意。 
