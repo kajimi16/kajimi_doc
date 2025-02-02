@@ -14,6 +14,4 @@
 - [rocket*web 框架*初印象](./rocket/rocket.md)
   - [request](./rocket/rocket_request.md)
 - [化学笔记](./chemical_speed_run.md)
-- [日记](./dairy/start.md)
-  - [11 月](./dairy/november/2411.md)
-  - [12 月](./dairy/december/2412.md)
+- [日志](./diary/y25-m01.md)
