@@ -1,0 +1,266 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+
+<head>
+    <!-- Book generated using mdBook -->
+    <meta charset="UTF-8">
+    <title>ai声音 - KAJIMI_BOOK</title>
+
+
+    <!-- Custom HTML head -->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="icon" href="../favicon.svg">
+    <link rel="shortcut icon" href="../favicon.png">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/chrome.css">
+    <link rel="stylesheet" href="../css/print.css" media="print">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <!-- Highlight.js Stylesheets -->
+    <link rel="stylesheet" href="../highlight.css">
+    <link rel="stylesheet" href="../tomorrow-night.css">
+    <link rel="stylesheet" href="../ayu-highlight.css">
+
+    <!-- Custom theme stylesheets -->
+
+
+    <!-- Provide site root to javascript -->
+    <script>
+        var path_to_root = "../";
+        var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+    </script>
+    <!-- Start loading toc.js asap -->
+    <script src="../toc.js"></script>
+</head>
+
+<body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch (e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch (e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor"
+                            title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                            aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme"
+                            aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)"
+                            aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S"
+                            aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">KAJIMI_BOOK</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..."
+                            aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="如何做一个ai翻唱的视频"><a class="header" href="#如何做一个ai翻唱的视频">如何做一个ai翻唱的视频</a></h1>
+<h3 id="第一步-获取数据集"><a class="header" href="#第一步-获取数据集">第一步 获取数据集</a></h3>
+<p>首先我们需要数据集（去训练自己要的角色的模型），简单来说，我们需要角色说话的录音。
+那么怎么获取呢，可以直接伸手要（x，当然是自己去分离啦</p>
+<p>使用<strong>MSST-WEBUI整合包</strong>，截至2025-2-3，已经是1.7.0了<br />
+作者 <a href="https://space.bilibili.com/445022409">bilibili@Sucial丶</a><br />
+<a href="https://github.com/SUC-DriverOld/MSST-WebUI">github项目开源地址</a><br />
+<a href="https://r1kc63iz15l.feishu.cn/wiki/JSp3wk7zuinvIXkIqSUcCXY1nKc">官方教程文档看这里</a><br />
+<a href="https://www.bilibili.com/video/BV18m42137rm">官方教程视频看这里</a></p>
+<p>我的简易教程</p>
+<ol>
+<li>打开教程文档，下载FULL版本setup（名字大概这样，版本可能不一样Setup_MSST_WebUI_1.7.0_v2_Full.exe）</li>
+<li>打开教程文档，下载vocal_models的model_bs_roformer_ep_368_sdr_12.9628.ckpt模型分离人声和伴奏</li>
+<li>打开教程文档，下载single_stem_models的deverb_bs_roformer_8_256dim_8depth.ckpt模型去混响</li>
+<li>下载好setup后运行，安装我们的MSST-WEBUI</li>
+<li>右键管理员第一次运行MSST-WEBUI</li>
+<li>把模型放到你MSST-WEBUI程序目录下的pretrain文件夹的对应子文件夹</li>
+<li>打开MSST-WEBUI的界面，根据需求配置下面的选项</li>
+<li><img src="sing_image1.png" alt="最后一步" /></li>
+</ol>
+<p>现在我们拿到我们的数据集了。好耶！</p>
+<h3 id="第二步-训练我们的模型并得到我们的歌"><a class="header" href="#第二步-训练我们的模型并得到我们的歌">第二步 训练我们的模型，并得到我们的歌</a></h3>
+<p>我们获得的数据集肯定需要<strong>SVC（歌声转换）项目</strong>来训练自己的模型啦，那么有没有适合小白的整合包呢，有的兄弟有的</p>
+<p>使用<strong>SVC Fusion</strong>整合包，集成了 So-VITS4.1，DDSP6.0，ReFlow-VAE-SVC 三个项目
+截至2025-2-3，目前已经停更
+易于使用 | 可用 CPU 训练 | 面向小白 歌声转换
+Qt版本作者：<a href="https://space.bilibili.com/399248533">bilibili@爱过_留过</a><br />
+<a href="https://www.svcfusion.com/neovim-runtime">文档地址</a><br />
+<a href="https://www.bilibili.com/video/BV1ur42177iP">视频教程</a></p>
+<p>我的简易教程:</p>
+<ol>
+<li>打开官方文档下载最新的安装包</li>
+<li>第一次运行，会提示缺少应用，我们直接按照指示下载</li>
+<li>下载好后运行</li>
+<li><img src="sing_image2.png" alt="看图" /></li>
+<li>打开数据集文件夹，按照目录要求放入wav文件，基本默认配置是对的，直接点击开始预处理，等结果</li>
+<li>进入训练模块，点击开始训练（默认配置，如果懂得可以自己来）<img src="sing_image3.png" alt="看图" /></li>
+<li>每1000步看一眼模型，如果够了就停。</li>
+<li>进入推理模块，选择模型，选择说话人，加载模型，上传要让角色唱的歌，直接<strong>开始推理</strong>，等结果。<img src="sing_image4.png" alt="看" /></li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <a rel="prev" href="../tools/index.html" class="mobile-nav-chapters previous"
+                            title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+                        <a rel="next prefetch" href="../diary/y25-m01.html" class="mobile-nav-chapters next"
+                            title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                    <main>
+                        <hr>
+                        <div id="giscus-container"></div>
+                    </main>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                <a rel="prev" href="../tools/index.html" class="nav-chapters previous" title="Previous chapter"
+                    aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+
+                <a rel="next prefetch" href="../diary/y25-m01.html" class="nav-chapters next" title="Next chapter"
+                    aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/giscus.js"></script>
+
+
+    </div>
+</body>
+
+</html>
