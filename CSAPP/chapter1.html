@@ -1,0 +1,355 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+
+<head>
+    <!-- Book generated using mdBook -->
+    <meta charset="UTF-8">
+    <title>计算机系统漫游 - KAJIMI_BOOK</title>
+
+
+    <!-- Custom HTML head -->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="icon" href="../favicon.svg">
+    <link rel="shortcut icon" href="../favicon.png">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/chrome.css">
+    <link rel="stylesheet" href="../css/print.css" media="print">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <!-- Highlight.js Stylesheets -->
+    <link rel="stylesheet" href="../highlight.css">
+    <link rel="stylesheet" href="../tomorrow-night.css">
+    <link rel="stylesheet" href="../ayu-highlight.css">
+
+    <!-- Custom theme stylesheets -->
+
+
+    <!-- Provide site root to javascript -->
+    <script>
+        var path_to_root = "../";
+        var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+    </script>
+    <!-- Start loading toc.js asap -->
+    <script src="../toc.js"></script>
+</head>
+
+<body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch (e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch (e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor"
+                            title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                            aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme"
+                            aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)"
+                            aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S"
+                            aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">KAJIMI_BOOK</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..."
+                            aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="第1章-计算机系统漫游"><a class="header" href="#第1章-计算机系统漫游">第1章 计算机系统漫游</a></h1>
+<p>在我看来，第一部分的内容就是带我们过了一遍计算机系统的整体架构。
+它用20多面传达了一个思想————<strong>你懂了1%，就懂了99%</strong>。
+我们要学会构建一个黑盒子（抽象），对于里面的组成，我们不去了解，而是当成一个实现了某种功能的整体去使用它，只有在真正需要知道原理不可的时候，再去深入研究。 （就像你学走路的时候不用了解身体是怎么构造的，知其然不知其所以然有时候可以有效降低学习成本，简易理解）
+闲话少说，围绕大部分人写的第一个c语言程序，让我们开始计算机系统漫游。</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    printf("Hello, world!\n");
+    return 0;
+}
+</code></pre>
+<h3 id="11信息就是位上下文"><a class="header" href="#11信息就是位上下文">1.1信息就是位+上下文</a></h3>
+<p>从ASCLL标准开始，这里引出了重要概念，<strong>系统中所有的信息—包括磁盘文件、内存中的程序、内存中存放的用户数据以及网络上传送的数据，都是由一串比特表示的。</strong>
+简而言之，8个位（0/1）搭包成一个字节，字节组成文件，由ASCLL组成的叫文本文件，c语言源文件就是一个文本文件。剩下的都叫二进制文件。
+我们不禁发出疑问，都是一堆1和0，计算机怎么知道它们是什么呢？
+这就是上下文的作用，上下文解释了这些字节是什么。</p>
+<h3 id="12程序被其他程序翻译成不同的格式"><a class="header" href="#12程序被其他程序翻译成不同的格式">1.2程序被其他程序翻译成不同的格式</a></h3>
+<p>众所周知，我们的c语言是高级语言，计算机看不懂。
+我们的helloworld程序要运行，需要以下步骤</p>
+<ul>
+<li>预处理器阶段：预处理器把我们的<code>#include&lt;stdio.h&gt;</code>替换成预制好的代码（stdio.h）</li>
+<li>编译阶段：编译器把预处理后的代码翻译成汇编语言</li>
+<li>汇编阶段：汇编器把汇编语言翻译成机器语言，现在电脑看得懂了</li>
+<li>链接阶段：链接器把多个目标文件（.o文件）和库文件（.a文件）链接成一个可执行文件（比如我们的helloworld用到了printf函数，需要把printf.o链接进来）</li>
+</ul>
+<p>这么折腾完之后，我们就得到了可执行文件，可以运行在计算机上。</p>
+<h3 id="13了解编译系统如何工作是大有益处的"><a class="header" href="#13了解编译系统如何工作是大有益处的">1.3了解编译系统如何工作是大有益处的</a></h3>
+<p>跳过，因为这里再讲接下来哪几章会提到编译器的什么内容，<strong>看不懂说是</strong></p>
+<h3 id="14处理器读并解释储存在内存中的指令"><a class="header" href="#14处理器读并解释储存在内存中的指令">1.4处理器读并解释储存在内存中的指令</a></h3>
+<p>现在我们要运行helloworld程序，表面上，我们看见黑框里面出现了"hello, world!"，实际上，内部又发生了什么呢？</p>
+<h4 id="硬件组成"><a class="header" href="#硬件组成">硬件组成</a></h4>
+<ul>
+<li>总线：贯穿整个系统的一组电子管道，它携带信息字节并负责在各个部件间传递。总之电线说是（x）</li>
+<li>I/O设备：输入/输出设备，比如键盘、显示器、鼠标、磁盘、网络接口等。输入输出设备和总线依靠适配器/控制器连接。</li>
+<li>主存：在处理器执行程序时，用来存放程序和程序处理的数据。俗称内存（x</li>
+<li>CPU：解释(或执行）存储在主存中指令的引擎。
+<ul>
+<li>PC：程序计数器，记录下一条要执行的指令的地址。</li>
+<li>寄存器：CPU内部的小容量存储器，用来暂存指令或数据。</li>
+<li>ALU：算术逻辑单元，用来执行算术和逻辑运算。
+总之，这么一堆精密复杂的东西构成了CPU，通过把数据在主存，ALU，寄存器之前移动或操作，完成了各种机器代码指令。
+实际上没有这么简单，剩下的以后细说说是。</li>
+</ul>
+</li>
+</ul>
+<h4 id="运行hello程序"><a class="header" href="#运行hello程序">运行hello程序</a></h4>
+<p>接下来大体讲一下具体运行</p>
+<ul>
+<li>shell程序把命令送到寄存器，再存到内存</li>
+<li>回车完成命令输入，shell把hello的代码和数据从磁盘复制到内存
+<ul>
+<li>数据通过DMA（直接存储器存取）从磁盘复制到主存（可以不经过CPU）</li>
+</ul>
+</li>
+<li>CPU从内存中取出指令并执行</li>
+<li>指令最终达成把"hello,world\n"从主存移动到寄存器文件，再复制到显示器。</li>
+</ul>
+<h3 id="15高速缓存至关重要"><a class="header" href="#15高速缓存至关重要">1.5高速缓存至关重要</a></h3>
+<p>我们可以发现，有很多时间浪费在了信息的挪动上，显然，如果能加速信息复制的时间开销，程序就能运行得更快。
+众所周知，空间越大，访问时间越慢，于是CPU引入了cache（高速缓存）来解决这个问题。在高速缓存里面加入经常访问的数据，从而达到了加速的作用。</p>
+<h3 id="16存储设备形成层次结构"><a class="header" href="#16存储设备形成层次结构">1.6存储设备形成层次结构</a></h3>
+<p>为了兼得大空间和低访问时间，CPU引入了存储设备的层次结构。</p>
+<ul>
+<li>L0：寄存器</li>
+<li>L1：L1高速缓存</li>
+<li>L2：L2高速缓存</li>
+<li>L3：L3高速缓存</li>
+<li>L4：主存</li>
+<li>L5：磁盘</li>
+<li>L6：网络</li>
+</ul>
+<p>越上层，空间越小，访问时间越快；。借用层次结构，我们提高了程序性能。</p>
+<h3 id="17操作系统管理硬件"><a class="header" href="#17操作系统管理硬件">1.7操作系统管理硬件</a></h3>
+<p>先思考一个问题，为什么进行编程的时候我们不用考虑底层硬件的细节，也不用考虑其他程序的干扰？
+实际上是操作系统通过抽象，实现了</p>
+<ul>
+<li>（1）防止硬件被失控的应用程序滥用</li>
+<li>（2）向应用程序
+提供简单一致的机制来控制复杂而又通常大不相同的低级硬件设备。</li>
+</ul>
+<h4 id="进程"><a class="header" href="#进程">进程</a></h4>
+<p>在程序运行的时候（比如我们的helloworld），操作系统创造了系统只有它在运行的假象，称为进程。
+进程是操作系统对一个正在运行的程序的一种抽象。操作系统可以通过保存进程的上下文，实现了CPU的并发执行（反复横跳，就是说看起来一个CPU在运行多个进程，实际上只是快速切换而已）。
+比如A进程先跑了一段时间，B进程来了，A的上下文被存起来，B进程开始运行，B运行完了，再通过A被存储的上下文继续A。
+这个转化的由操作系统内核（kernel）管理，它实际上是操作系统代码常驻主存的部分，是系统管理全部进程所用代码和数据结构的集合。</p>
+<h4 id="线程"><a class="header" href="#线程">线程</a></h4>
+<p><strong>看不懂说是</strong></p>
+<h4 id="虚拟内存"><a class="header" href="#虚拟内存">虚拟内存</a></h4>
+<p>还有个有意思的问题，为什么我们设计程序的时候不用管乱七八糟的字节存在哪里？
+实际上，操作系统通过虚拟内存，实现了进程独占主存的假象。并且虚拟地址空间被明确分成了具有准确定义的区，包括</p>
+<ul>
+<li>程序代码和数据</li>
+<li>堆</li>
+<li>共享库</li>
+<li>栈</li>
+<li>内核虚拟内存</li>
+</ul>
+<h4 id="文件"><a class="header" href="#文件">文件</a></h4>
+<p>文件其实就是字节序列。但是超出想象的是，各种设备（比如鼠标键盘屏幕）都被看成文件。
+通过这种抽象，我们可以通过统一的方法去用不同的设备，也可以让同一个程序在不同的环境下运行。</p>
+<h3 id="18系统之间利用网络通信"><a class="header" href="#18系统之间利用网络通信">1.8系统之间利用网络通信</a></h3>
+<p>从现在开始，我们即将脱离单机模式，进入Internet。
+还是helloworld，我们可以通过新的方式运行</p>
+<ul>
+<li>在键盘输入hello</li>
+<li>客户端像服务器发送hello请求</li>
+<li>服务器运行hello程序，产生"hello,world\n"</li>
+<li>服务器把结果发送给客户端</li>
+<li>客户端把结果显示在屏幕上。</li>
+</ul>
+<h3 id="19重要主题"><a class="header" href="#19重要主题">1.9重要主题</a></h3>
+<p>这一块讲了一堆散装概念</p>
+<h4 id="amdahl定律"><a class="header" href="#amdahl定律">Amdahl定律</a></h4>
+<p>假如我们把程序中a比例的时间缩短到1/k，那么总体的时间会变成<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">a</span><span class="mclose">)</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">d</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.2392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8942em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4159em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3488em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">o</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">d</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1512em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>
+那么整体加速比就为
+<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.4309em;vertical-align:-0.5858em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mtight">1</span><span class="mbin mtight">−</span><span class="mord mathnormal mtight">a</span><span class="mclose mtight">)</span><span class="mbin mtight">+</span><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6915em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span style="top:-3.2255em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5858em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
+<h4 id="并发和并行"><a class="header" href="#并发和并行">并发和并行</a></h4>
+<p>并发就是一个有多个活动的系统，并行就是用并发让程序运行得更快。</p>
+<ul>
+<li>线程级并发：多个线程快速切换</li>
+<li>指令级并行：多个指令同时执行</li>
+<li>单指令多数据并行：一条指令处理多个数据</li>
+</ul>
+<h4 id="抽象的重要性"><a class="header" href="#抽象的重要性">抽象的重要性</a></h4>
+<p>现在我们可以看出，计算机系统一直在做抽象这件事来建立可以直接使用的简单有序的模型，从而降低各方面的开销以及提高性能。</p>
+<h3 id="110小结"><a class="header" href="#110小结">1.10小结</a></h3>
+<p>你在看的已经是小结了，何必再看一个小结（笑）。</p>
+<p>写于2025年1月8日21:21:47</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <a rel="prev" href="../CSAPP/chapter0.html" class="mobile-nav-chapters previous"
+                            title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+                        <a rel="next prefetch" href="../CSAPP/chapter2.html" class="mobile-nav-chapters next"
+                            title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                    <main>
+                        <hr>
+                        <div id="giscus-container"></div>
+                    </main>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                <a rel="prev" href="../CSAPP/chapter0.html" class="nav-chapters previous" title="Previous chapter"
+                    aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+
+                <a rel="next prefetch" href="../CSAPP/chapter2.html" class="nav-chapters next" title="Next chapter"
+                    aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/giscus.js"></script>
+
+
+    </div>
+</body>
+
+</html>

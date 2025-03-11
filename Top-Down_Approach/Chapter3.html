@@ -1,0 +1,491 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+
+<head>
+    <!-- Book generated using mdBook -->
+    <meta charset="UTF-8">
+    <title>运输层 - KAJIMI_BOOK</title>
+
+
+    <!-- Custom HTML head -->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="icon" href="../favicon.svg">
+    <link rel="shortcut icon" href="../favicon.png">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/chrome.css">
+    <link rel="stylesheet" href="../css/print.css" media="print">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <!-- Highlight.js Stylesheets -->
+    <link rel="stylesheet" href="../highlight.css">
+    <link rel="stylesheet" href="../tomorrow-night.css">
+    <link rel="stylesheet" href="../ayu-highlight.css">
+
+    <!-- Custom theme stylesheets -->
+
+
+    <!-- Provide site root to javascript -->
+    <script>
+        var path_to_root = "../";
+        var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+    </script>
+    <!-- Start loading toc.js asap -->
+    <script src="../toc.js"></script>
+</head>
+
+<body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch (e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch (e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor"
+                            title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                            aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme"
+                            aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)"
+                            aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S"
+                            aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">KAJIMI_BOOK</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..."
+                            aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="第三章-运输层"><a class="header" href="#第三章-运输层">第三章 运输层</a></h1>
+<p>在上一章里面，我们明显看到TCP和UDP这两个运输层协议起到了非常重要的作用。在这一章中，我们会通过<strong>提出需求-&gt;不断复杂化情景以不断接近现实-&gt;根据不断复杂的情景优化方案-&gt;实现现实的运输层协议</strong>这个方法来介绍。</p>
+<h3 id="31-概述和运输层服务"><a class="header" href="#31-概述和运输层服务">3.1 概述和运输层服务</a></h3>
+<p>运输层协议本质的功能就是提供了<strong>逻辑通信</strong>，简单来说就是忽略电缆之类的物理连接，只需知道它们是连着的。<br />
+作为网络边缘的一部分，运输层协议还是在端系统中实现的，在发送端，它把应用层的数据转化为<strong>运输层报文段</strong>并交给下层，在接收端，它从下层接受报文段并处理出应用层报文。<br />
+运输层的协议各种各样，最常用<strong>TCP</strong>和<strong>UDP</strong>两种。</p>
+<h4 id="311-运输层和网络层的关系"><a class="header" href="#311-运输层和网络层的关系">3.1.1 运输层和网络层的关系</a></h4>
+<p>我们设想两个家庭，一个在福建，一个在广东，每个家庭都有若干成员，都有一个人专门负责收集信件并发给另一个家庭。在这个类比下</p>
+<ul>
+<li>应用层报文 == 信封里面的信件</li>
+<li>进程 == 家庭成员</li>
+<li>主机 == 家庭</li>
+<li>运输层协议 == 专门负责收集信件并发给另一个家庭的人</li>
+<li>网络层协议 == 邮政</li>
+</ul>
+<p>正如，寄件人只负责寄件，而不负责具体的邮政细节，理论上如果网络层有什么差错，运输层不能进行干预，但实际上，运输协议可以在不可靠的网络协议上实现可靠的数据运输。</p>
+<h4 id="312-因特网运输层概述"><a class="header" href="#312-因特网运输层概述">3.1.2 因特网运输层概述</a></h4>
+<p>我们知道有提供不可靠无连接服务的<strong>UDP（用户数据报协议）<strong>和提供可靠，面向连接服务的</strong>TCP（传输控制协议）</strong><br />
+在进行讲解前我们需要明确，书中TCP和UDP的分组统称<em>报文段</em>，而网络层分组统称<em>数据报</em>。以进行区别，实际上它们经常被混用（<br />
+因为IP的服务模型是<strong>尽力而为交付服务</strong>，它不保证完成任务，只是尽最大的努力，是<strong>不可靠服务</strong>，它在主机间交付报文段<br />
+而我们的运输层协议则通过<strong>运输层的多路复用和多路分解</strong>将主机间的报文段扩展到进程间，相当于之前那个专门负责寄信的人，一边收集不同进程的信，一边把不同的信分配给不同的进程。<br />
+我们又都知道UDP也是管杀不管埋的主，而TCP则不仅提供<strong>可靠数据运输</strong>，而且还提供<strong>拥塞控制</strong>，这就是我们接下来要了解的。</p>
+<h3 id="32-多路复用和多路分解"><a class="header" href="#32-多路复用和多路分解">3.2 多路复用和多路分解</a></h3>
+<p>我们记得，进程有自己的套接字作为分组进出的门户，而<strong>多路分解</strong>就是把运输层报文段的数据交付到的正确套接字，而<strong>多路复用</strong>就是在从套接字拿到数据并封装上首部信息的过程。<br />
+那么我们不难推理</p>
+<ol>
+<li>套接字有独特的标识符</li>
+<li>报文段有特殊字段指示正确的套接字</li>
+</ol>
+<p>实际上，这些字段是<strong>源端口号字段</strong>和<strong>目的端口号字段</strong>，端口号是一个16比特的数，在0～65535之间，其中0～1023为<strong>周知端口号</strong>，已经被保留给指定的服务，其他可以自由为新的应用程序分配。</p>
+<p>对于UDP套接字，它是由一个二元组全面标识的，只包含<strong>目的IP地址和目的端口号</strong>，在发送端，数据被运输层封装上源端口号，目的端口号和其他的首部字段，假设，它幸运地到达目的地，目的主机会检查它的目的端口号，将其分解到对应的套接字，并保留源端口号作为“返回地址”。<br />
+而对于TCP套接字，它是由四元组标识的，即<strong>源IP地址，源端口号，目的IP地址，目的端口号</strong>，同理它的分解就是按照报文段里面的对应字段来分解的。不同的主机对同一个进程发送的报文段也会进入不同的套接字。</p>
+<h3 id="33-无连接运输udp"><a class="header" href="#33-无连接运输udp">3.3 无连接运输：UDP</a></h3>
+<p>我们知道，TCP可以确保数据正确抵达，那为什么我们的UDP还没有被淘汰呢？</p>
+<ol>
+<li>关于发送什么数据和何时发送的应用层控制更为精细：其实就是可以大胆抢夺带宽</li>
+<li>无需连接建立</li>
+<li>无连接状态</li>
+<li>分组首部开销小</li>
+</ol>
+<p>现在就让我们看看这种轻量级的运输层协议</p>
+<h4 id="331-udp报文段结构"><a class="header" href="#331-udp报文段结构">3.3.1 UDP报文段结构</a></h4>
+<p>UDP的首部只有4个字段，每个2字节，分别是</p>
+<ul>
+<li>源端口号</li>
+<li>目的端口号</li>
+<li>长度：UDP报文段的字节数</li>
+<li>检验和：检验报文段是否出现差错</li>
+</ul>
+<h4 id="332-udp检验和"><a class="header" href="#332-udp检验和">3.3.2 UDP检验和</a></h4>
+<p>UDP检验和提供了差错检验功能，虽然UDP对差错无能为力。<br />
+它通过将UDP报文段里面所有的16字节数据相加，最后取反码得到。这样接受方就可以把所有数据和检验和加起来，通过最后是不是16个1来判断数据用没有差错。你可能好奇为什么提供差错检测，这是为了满足<strong>端到端原则</strong>，因为我们不能保证下层是否是可靠的，而且在下层提供可靠性的成本大于在上层提供。</p>
+<h3 id="34-可靠数据传输原理"><a class="header" href="#34-可靠数据传输原理">3.4 可靠数据传输原理</a></h3>
+<p>可靠数据运输为上层提供了一种假象，数据似乎是通过可靠的信道进行运输的，实际上，是<strong>可靠数据运输协议</strong>加上不可靠的信道（<br />
+接下来我们用rdt协议简称可靠数据运输协议</p>
+<h4 id="341-构造可靠数据传输协议"><a class="header" href="#341-构造可靠数据传输协议">3.4.1 构造可靠数据传输协议</a></h4>
+<h5 id="rdt10-经可靠信道的可靠数据运输"><a class="header" href="#rdt10-经可靠信道的可靠数据运输">rdt1.0 经可靠信道的可靠数据运输</a></h5>
+<p>在这个情况下发送端的行为只有</p>
+<ul>
+<li>被上层调用，发送报文</li>
+</ul>
+<p>接收端的行为</p>
+<ul>
+<li>收到报文，交付</li>
+</ul>
+<p>因为信道是可靠的，所以不需要确认，也不需要害怕差错</p>
+<h5 id="rdt20-经具有比特差错信道的可靠数据运输"><a class="header" href="#rdt20-经具有比特差错信道的可靠数据运输">rdt2.0 经具有比特差错信道的可靠数据运输</a></h5>
+<p>现在我们的信道不再可靠了，它的运输的分组会出现比特受损的情况。<br />
+试想你在信号不好的时候和别人聊天，是不是会向别人进行确认，即发起“OK”和“没听清”两种确认。这种使用<strong>肯定确认</strong>和<strong>否定确认</strong>的重传机制的可靠数据运输协议叫<strong>自动重传请求（ARQ）协议</strong><br />
+它需要三种协议功能</p>
+<ul>
+<li>差错检测 判断出现了比特差错</li>
+<li>接收方反馈 进行肯定确认（<strong>ACK</strong>）和否定确认（<strong>NAK</strong>）</li>
+<li>重传 出现差错后重传</li>
+</ul>
+<p>发送端现在有两种行为：</p>
+<ul>
+<li>被上层调用，发送报文</li>
+<li>等待NAK和ACK
+<ul>
+<li>NAK -&gt; 重传</li>
+<li>ACK -&gt;  等待调用</li>
+</ul>
+</li>
+</ul>
+<p>接收端现在也是</p>
+<ul>
+<li>拿到数据进行差错检测
+<ul>
+<li>没有差错 -&gt; 返回ACK 交付</li>
+<li>有差错 -&gt; 返回NAK 等待</li>
+</ul>
+</li>
+</ul>
+<p>在目前分组被正确运输前，发送方会一直等待，这就是<strong>停等</strong>协议<br />
+现在2.0看起来很完美，但是忽略了ACK和NAK受损的情况，我们不可能用新的NAK和ACK不断套娃，只能对从其他方面下手<br />
+其实很简单，引入<strong>冗余分组</strong>就行，拿到不清楚的ACK和NAK也大胆重发，但这又对于接收方提出了挑战，它怎么知道拿到的分组是新的还是旧的呢？（比如发的ACK被差错了，拿了一个重复的）<br />
+于是我们为分组引入了序号，对于停等协议，我们只需要1和0两种序号，循环使用就好。<br />
+于是我们发明了<strong>rdt2.1</strong><br />
+发送端：</p>
+<ul>
+<li>被上层调用，发送有序号的报文</li>
+<li>等待反馈
+<ul>
+<li>（正确的NAK || 错误的NAK或ACK）-&gt; 重传</li>
+<li>正确的ACK -&gt; 等待调用</li>
+</ul>
+</li>
+</ul>
+<p>接收端：</p>
+<ul>
+<li>拿到数据进行检测
+<ul>
+<li>没有差错 &amp;&amp; 序号正确 -&gt; 返回ACK 交付</li>
+<li>没有差错 &amp;&amp; 序号错误 -&gt; 返回ACK 丢弃</li>
+<li>有差错 -&gt; 返回NAK 等待</li>
+</ul>
+</li>
+</ul>
+<p>接下来我们优化掉NAK，只需给ACK加上序号，让发送端进行序号的读取进行优化，得到<strong>rdt2.2</strong><br />
+发送端：</p>
+<ul>
+<li>被上层调用，发送有序号的报文</li>
+<li>等待反馈
+<ul>
+<li>差错的ACK -&gt; 重传</li>
+<li>无差错但序号错误ACK -&gt; 忽略</li>
+<li>无差错且序号正确ACK -&gt; 等待调用</li>
+</ul>
+</li>
+</ul>
+<p>接收端：</p>
+<ul>
+<li>拿到数据进行检测
+<ul>
+<li>没有差错 &amp;&amp; 序号正确 -&gt; 返回对应序号ACK 交付</li>
+<li>没有差错 &amp;&amp; 序号错误 -&gt; 返回对应序号ACK 丢弃</li>
+<li>有差错 -&gt; 返回错误序号ACK 等待</li>
+</ul>
+</li>
+</ul>
+<h5 id="rdt30-经具有比特差错的丢包信道的可靠数据运输"><a class="header" href="#rdt30-经具有比特差错的丢包信道的可靠数据运输">rdt3.0 经具有比特差错的丢包信道的可靠数据运输</a></h5>
+<p>现在我们的信道更真实了，有时候不只是比特出问题，而是分组整个没有了，这个情况下我们怎么处理呢？<br />
+我们借用最通用的方法-&gt;<strong>倒计数定时器</strong>，只要过了指定的时间还没有拿到反馈，发送方也进行一个重传，于是，我们发明了<strong>rdt3.0</strong><br />
+发送端：</p>
+<ul>
+<li>被上层调用，发送有序号的报文，启动定时器</li>
+<li>等待反馈
+<ul>
+<li>（差错的ACK || 定时器超时）-&gt; 重传</li>
+<li>无差错但序号错误ACK -&gt; 忽略</li>
+<li>无差错且序号正确ACK -&gt; 关闭定时器，等待调用</li>
+</ul>
+</li>
+</ul>
+<p>接收端：</p>
+<ul>
+<li>拿到数据进行检测
+<ul>
+<li>没有差错 &amp;&amp; 序号正确 -&gt; 返回对应序号ACK 交付</li>
+<li>没有差错 &amp;&amp; 序号错误 -&gt; 返回对应序号ACK 丢弃</li>
+<li>有差错 -&gt; 返回错误序号ACK 等待</li>
+</ul>
+</li>
+</ul>
+<p>因为分组序号在0和1之间交替，我们的rdt3.0有时被叫做<strong>比特交替协议</strong></p>
+<p>现在，我们至少得到了一个功能正确的协议，但它的性能却低得离谱，在大部分时间里，作为停等协议的它只是等待反馈而不进行发送。</p>
+<h4 id="342-流水线可靠数据传输协议"><a class="header" href="#342-流水线可靠数据传输协议">3.4.2 流水线可靠数据传输协议</a></h4>
+<p>发送方可以同时发送多个分组一起等待确认，这种类似<strong>流水线</strong>法方法来提速。现在我们只是需要解决性能加强带来的新的功能问题</p>
+<ul>
+<li>必须增加序号范围，保证可靠数据传输中序号的作用</li>
+<li>发送方和接收方必须缓存多个分组</li>
+<li>新的差错恢复方法 <strong>回退N步</strong>和<strong>选择重传</strong></li>
+</ul>
+<h4 id="343-回退n步"><a class="header" href="#343-回退n步">3.4.3 回退N步</a></h4>
+<p>在<strong>回退N步（GBN）协议</strong>中，我们用一个长度为N的窗口包含分组，将窗口内的分组进行发送，定义窗口内第一个分组的序号为<strong>基序号</strong>，定义窗口内第一个没被发送的分组的序号为<strong>下一个序号</strong>。<br />
+窗口内只有两种分组，从基序号到下一个序号-1的分组为已发送但没有确认的分组，而下一个序号到窗口末尾的是可发送但还没被发送的序号。<br />
+一旦基序号的分组被确认，窗口就向前滑动，因此我们也叫GBN协议<strong>滑动窗口协议</strong><br />
+发送端：</p>
+<ul>
+<li>被上层调用，告诉上层有无空闲，按流水线发送有序号的报文，启动定时器</li>
+<li>等待反馈
+<ul>
+<li>（差错的ACK || 定时器超时）-&gt; 从基序号开始重传</li>
+<li>无差错但序号错误ACK -&gt; 忽略</li>
+<li>无差错且序号正确ACK -&gt; 关闭定时器，窗口前滚</li>
+</ul>
+</li>
+</ul>
+<p>接收端：</p>
+<ul>
+<li>拿到数据进行检测
+<ul>
+<li>没有差错 &amp;&amp; 序号正确 -&gt; 返回对应序号ACK 交付</li>
+<li>没有差错 &amp;&amp; 序号错误 -&gt; 返回基序号ACK 丢弃后面所有分组</li>
+<li>有差错 -&gt; 返回错误序号ACK 等待</li>
+</ul>
+</li>
+</ul>
+<p>我们可以发现，GBN协议会丢弃所有失序分组，这虽然浪费，但好在简单易操作。</p>
+<h4 id="344-选择重传"><a class="header" href="#344-选择重传">3.4.4 选择重传</a></h4>
+<p>GBN协议丢弃所有失序分组的方式会造成大量浪费，就像你因为第一个字错误重新写一个1000字的文章（尽管你已经写到999个字了）<br />
+<strong>选择重传（SR）协议</strong>通过缓存已经正确发送的分组，仅处理需要重传分组的方法进行优化
+发送端：</p>
+<ul>
+<li>被上层调用，告诉上层有无空闲，按流水线发送有序号的报文，启动每个分组自己的定时器</li>
+<li>等待反馈
+<ul>
+<li>（差错的ACK || 定时器超时）-&gt; 重传对应分组</li>
+<li>无差错但序号大于发送基序号ACK -&gt; 关闭定时器，确认对应分组</li>
+<li>无差错且发送基序号ACK -&gt; 关闭定时器，发送窗口前滚至第一个未确认分组</li>
+</ul>
+</li>
+</ul>
+<p>接收端：</p>
+<ul>
+<li>拿到数据进行检测
+<ul>
+<li>没有差错 &amp;&amp; 接收基序号 -&gt; 返回对应序号ACK 按序号交付所有连续已缓存分组，接收窗口前滚至第一个期待（还没到）分组</li>
+<li>没有差错 &amp;&amp; 大于接收基序号 -&gt; 返回对应序号ACK 缓存</li>
+<li>没有差错 &amp;&amp; 小于接收基序号 -&gt; 返回对应序号ACK 丢弃</li>
+<li>有差错 -&gt; 返回错误序号的ACK 等待</li>
+</ul>
+</li>
+</ul>
+<p>对于SR协议，接受窗口的大小必须小于最大序号的一半，因为如果窗口过大，无法确认是新的分组还是重传的分组，</p>
+<h3 id="35-面向连接的运输tcp"><a class="header" href="#35-面向连接的运输tcp">3.5 面向连接的运输：TCP</a></h3>
+<h4 id="351-tcp连接"><a class="header" href="#351-tcp连接">3.5.1 TCP连接</a></h4>
+<p>TCP是<strong>面向连接的</strong>，而且这个连接是<strong>双全工</strong>（双向）的。<br />
+TCP会把数据放到<strong>发送缓存</strong>里面，在方便时取出受限于<strong>最大报文段长度（MSS）<strong>的数据，而MSS受限于最大链路层帧长度（<strong>最大传输单元（MTU）</strong>）。
+TCP为每个客户数据加上TCP首部，形成</strong>TCP报文段</strong>。</p>
+<h4 id="352-tcp报文段结构"><a class="header" href="#352-tcp报文段结构">3.5.2 TCP报文段结构</a></h4>
+<p>TCP字段也是首部字段和数据字段，我们细说首部字段</p>
+<ul>
+<li>源端口号 16比特</li>
+<li>目的端口号 16比特</li>
+<li>序号字段 32比特 实现可靠数据传输</li>
+<li>确认号 32比特 实现可靠数据传输</li>
+<li>接收窗口字段 16比特 流量控制</li>
+<li>首部长字段 4比特 首部长度</li>
+<li>检验和 16比特</li>
+<li>选项字段 可变 多功能</li>
+<li>标志字段 6比特
+<ul>
+<li>ACK 标志报文有效</li>
+<li>RST SYN FIN 连接的建立和拆除</li>
+<li>CWR ECE 明确拥塞通告</li>
+<li>URG 指示紧急数据存在</li>
+<li>PSH 指示立刻交付数据</li>
+</ul>
+</li>
+<li>紧急数据指针字段 16比特 指向紧急数据</li>
+</ul>
+<p>总之我们开始介绍，首先是我们的序号和确认号<br />
+序号就是我们的每个字节的序号（x<br />
+举个例子，MSS是1000字节，我们的文件有500_000字节，那么我们的第一个报文段就是序号是x,第二个是x+1000,第三个就是x+2000。<br />
+而确认号就是主机需要的下一个字节的序号，比如我的电脑已经拿到了0-555字节了，那么我的电脑发的下一个报文段里面的确认号就是556。<br />
+因为<strong>累积确认</strong>的存在，TCP确认号是第一个顺位的字节，比如我拿到了0-900 1000-1100,那么我的确认号会是901。</p>
+<p>Telent这个应用层协议就很有意思，它一般被拿来登陆，但是因为它不加密，已经淘汰了。<br />
+简单来讲，它会通过回显来确认你打的字被处理了。</p>
+<ol>
+<li>客户端发送你打的字，里面有序号，确认号，和你打的字</li>
+<li>服务器收到你的字，回发你的字，序号，确认号</li>
+<li>客户端最后回复一个确认</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <a rel="prev" href="../Top-Down_Approach/Chapter2.html" class="mobile-nav-chapters previous"
+                            title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+                        <a rel="next prefetch" href="../Top-Down_Approach/situation.html" class="mobile-nav-chapters next"
+                            title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                    <main>
+                        <hr>
+                        <div id="giscus-container"></div>
+                    </main>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                <a rel="prev" href="../Top-Down_Approach/Chapter2.html" class="nav-chapters previous" title="Previous chapter"
+                    aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+
+                <a rel="next prefetch" href="../Top-Down_Approach/situation.html" class="nav-chapters next" title="Next chapter"
+                    aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/giscus.js"></script>
+
+
+    </div>
+</body>
+
+</html>
