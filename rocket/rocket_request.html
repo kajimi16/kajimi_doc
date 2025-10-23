@@ -1,0 +1,404 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+
+<head>
+    <!-- Book generated using mdBook -->
+    <meta charset="UTF-8">
+    <title>request - KAJIMI_BOOK</title>
+
+
+    <!-- Custom HTML head -->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="icon" href="../favicon.svg">
+    <link rel="shortcut icon" href="../favicon.png">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/chrome.css">
+    <link rel="stylesheet" href="../css/print.css" media="print">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <!-- Highlight.js Stylesheets -->
+    <link rel="stylesheet" href="../highlight.css">
+    <link rel="stylesheet" href="../tomorrow-night.css">
+    <link rel="stylesheet" href="../ayu-highlight.css">
+
+    <!-- Custom theme stylesheets -->
+
+
+    <!-- Provide site root to javascript -->
+    <script>
+        var path_to_root = "../";
+        var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+    </script>
+    <!-- Start loading toc.js asap -->
+    <script src="../toc.js"></script>
+</head>
+
+<body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch (e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch (e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor"
+                            title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                            aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme"
+                            aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)"
+                            aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S"
+                            aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">KAJIMI_BOOK</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..."
+                            aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="rocket-request"><a class="header" href="#rocket-request">Rocket Request</a></h1>
+<p>这部分感觉就是大的要来了，密密麻麻的官方文档目录，看着有点害怕</p>
+<h3 id="methods"><a class="header" href="#methods">methods</a></h3>
+<p>按照我的理解就是<code>get post put delete</code>这些路由属性响应的http method（方法）</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[post("/")]
+<span class="boring">}</span></code></pre></pre>
+<p>就像这一个例子，它会把POST请求match（匹配）到路径"/"上（这里的POST需要和post这个属性区分语义）</p>
+<h4 id="特性1-head-requests"><a class="header" href="#特性1-head-requests">特性1 HEAD Requests</a></h4>
+<p>在GET路由存在的情况下，rocket会剥离response的body，达到自动处理HEAD请求的目的。
+当然，也可以explicitly（显式地）声明head请求的处理方式。</p>
+<h4 id="特性2-reinterpreting"><a class="header" href="#特性2-reinterpreting">特性2 Reinterpreting</a></h4>
+<p>因为浏览器只允许对HTML forms进行GET或POST的request以进行上传。 Rocket会在特定的条件下对request method进行reinterpretation（重新解释）以适应浏览器的限制。
+引用官方文档的例子：
+If a POST request contains</p>
+<ul>
+<li>a body of <code>Content-Type: application/x-www-form-urlencoded </code></li>
+<li>the form's first field has the name <code>_method </code></li>
+<li>a valid HTTP method name as its value (such as <code>"PUT"</code>), that field's value is used as the method for the incoming request.</li>
+</ul>
+<p>这允许Rocket应用程序提交非POST表单。<br />
+比如官方提供的 <a href="https://github.com/rwf2/Rocket/blob/v0.5/examples/todo/static/index.html.tera#L47">todo</a> 案例就利用了这个特性来从一个网页表单（web form）上传（submit） PUT和DELETE 请求（requests）。</p>
+<h3 id="dynamic-paths动态路径"><a class="header" href="#dynamic-paths动态路径">Dynamic Paths（动态路径）</a></h3>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[get("/hello/&lt;name&gt;")]
+fn hello(name: &amp;str) -&gt; String {
+    format!("Hello, {}!", name)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>看到被尖括号包含的name了吗，这个就是一个动态路径。
+如果我们mount了"/"这个根路径(.mount("/", routes![hello])
+接下来每个有两个路径segment（片段）的请求，只要第一个是hello，第二个就会变成name的值。<br />
+接下来我们就可以hello乱七八糟的东西了（
+实际上只要有各种FromParem的trait，都可以作为动态路径的一部分。这些类型被叫作parameter guards（参数守卫）。</p>
+<h4 id="multiple-segments"><a class="header" href="#multiple-segments">Multiple Segments</a></h4>
+<p>这里我们又有了implement (实现)<code>FromSegments</code>（特征）的segments guards（片段守卫），可以匹配多个路径片段。<br />
+段守卫必须是路径的最后一个组件：任何位于段守卫之后的文本都将导致编译时错误（runtime error）。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::path::PathBuf;
+
+#[get("/page/&lt;path..&gt;")]
+fn get_page(path: PathBuf) { /* ... */ }
+<span class="boring">}</span></code></pre></pre>
+<p>比如这个例子就可以匹配所有page开头的路径，后面跟着任意数量的路径片段。
+这么搞有什么好处呢，比如可以快速简洁地防止 Path Traversal（路径遍历）攻击。
+这个攻击有一个很有意思的名字可以概括它的原理——dot-dot-slash，比如在一些操作系统里面可以用./..访问当前目录的上级目录，而这可能不是我们需要的结果，我们就可以通过这种方式来阻止这种行为。
+比如下面是官方文档一个4行代码实现安全静态文件服务的例子：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::path::{Path, PathBuf};
+use rocket::fs::NamedFile;
+
+#[get("/&lt;file..&gt;")]
+async fn files(file: PathBuf) -&gt; Option&lt;NamedFile&gt; {
+    NamedFile::open(Path::new("static/").join(file)).await.ok()
+}
+<span class="boring">}</span></code></pre></pre>
+<p>这里的file参数是一个PathBuf，可以匹配任意数量的路径片段。</p>
+<h4 id="ignored-segments"><a class="header" href="#ignored-segments">Ignored Segments</a></h4>
+<p>感觉这里没什么好说的</p>
+<ul>
+<li><code>&lt;_&gt;</code>：忽略一个片段</li>
+<li><code>&lt;-..&gt;</code>：忽略多个片段</li>
+</ul>
+<h3 id="forwarding-转发"><a class="header" href="#forwarding-转发">Forwarding (转发)</a></h3>
+<p>在匹配路由的过程中，Rocket会按照路由声明的顺序进行匹配，如果有多个路由匹配到同一个请求，Rocket会选择最先声明的那个路由。
+每个路由都有一个associated priority（优先级）属性。当然，也可以手动规划rank这个属性来手动规划匹配顺序。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[get("/user/&lt;id&gt;")]
+fn user(id: usize) { /* ... */ }
+
+#[get("/user/&lt;id&gt;", rank = 2)]
+fn user_int(id: isize) { /* ... */ }
+
+#[get("/user/&lt;id&gt;", rank = 3)]
+fn user_str(id: &amp;str) { /* ... */ }
+
+#[launch]
+fn rocket() -&gt; _ {
+    rocket::build().mount("/", routes![user, user_int, user_str])
+}
+<span class="boring">}</span></code></pre></pre>
+<p>依然用例子来学习，
+这个例子会先进行匹配"/user/<id>"，因为它是最先声明的路由。如果不匹配
+然后匹配"/user/<id>"的isize版本，因为它比usize版本的rank属性更高。如果不匹配
+最后匹配"/user/<id>"的&amp;str版本，因为它比的rank属性最高。
+可以用Result的枚举类型来搞事情<br />
+比如user函数的id参数类型是Result&lt;usize, &amp;str&gt;，那么user路由就永远不会forward（转发）。Ok变体表示<id>是一个有效的usize，而Err变体表示<id>不是一个usize。Err的value包含了无法解析为usize的字符串。</p>
+<h4 id="default-ranking预制排序"><a class="header" href="#default-ranking预制排序">Default Ranking（预制排序）</a></h4>
+<p>预制排序有-12到-1的档次，越低优先级越高，和path和query（查询参数）的color（特色）有关。
+color分四种：</p>
+<ul>
+<li>static
+<ul>
+<li>对于path（-8）对于query（-4）</li>
+<li>表示所有路径都是静态的</li>
+</ul>
+</li>
+<li>partial
+<ul>
+<li>对于path（-4）对于query（-3）</li>
+<li>表示路径的有动有静</li>
+</ul>
+</li>
+<li>wild
+<ul>
+<li>对于path（-0）对于query（-2）</li>
+<li>表示路径全动态</li>
+</ul>
+</li>
+<li>none
+<ul>
+<li>对于query（-1）</li>
+<li>表示没有传入参数</li>
+</ul>
+</li>
+</ul>
+<p>按照上述规则相加可以得到default rank（默认排序），可以看出这个预制参数越小表示越静态</p>
+<h3 id="request-guards"><a class="header" href="#request-guards">Request Guards</a></h3>
+<p>作为官方文档认为的rocket的最强组件，request guards（请求守卫）可以让我们在路由处理函数（handler）之前对请求进行预处理。 很显然，根据举一反三，请求守卫具有<code>FromRequest</code>的trait。
+它通常代表着一个validation policy（验证策略），比如验证请求参数是否合法，或者检查请求是否来自某个IP地址。
+实际上它一般被当成输入来使用，实际上在Rocket分发请求之前，会自动搞一些守卫对handler进行验证。 只有被验证通过的handler才会被分发请求。</p>
+<h4 id="custom-guards"><a class="header" href="#custom-guards">Custom Guards</a></h4>
+<p>我们可以自己实现请求守卫，只需要给自己的类型实现<code>FromRequest</code>的trait。这样就可以保证只有满足对应条件的情况下，参数列表里含有对应type的handler才会被分发请求。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[get("/sensitive")]
+fn sensitive(key: ApiKey) { /* .. */ }
+<span class="boring">}</span></code></pre></pre>
+<p>这里的<code>ApiKey</code>类型就是一个自定义的请求守卫，它会在请求处理之前进行验证。</p>
+<h4 id="guard-transparency"><a class="header" href="#guard-transparency">Guard Transparency</a></h4>
+<p>守卫透明性解释了为什么对于敏感的请求参数，我们需要在路由处理函数之前进行验证。
+请求守卫提供了编译时验证，意味着敏感信息在编译时就已经得到了保证。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn health_records(user: &amp;SuperUser) -&gt; Records { /* ... */ }
+<span class="boring">}</span></code></pre></pre>
+<p>以上述代码为例，</p>
+<ul>
+<li>health_records函数需要&amp;SuperUser类型</li>
+<li>SuperUser类型的唯一构建者是<code>FromRequest</code>.</li>
+<li>只有Rocket可以通过<code>FromRequest</code>提供&amp;Request.</li>
+<li>所以调用health_records的请求必须是来自SuperUser的请求。</li>
+</ul>
+<h4 id="forwarding-guards"><a class="header" href="#forwarding-guards">Forwarding Guards</a></h4>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use rocket::response::Redirect;
+
+#[get("/login")]
+fn login() -&gt; Template { /* .. */ }
+
+#[get("/admin")]
+fn admin_panel(admin: AdminUser) -&gt; &amp;'static str {
+    "Hello, administrator. This is the admin panel!"
+}
+
+#[get("/admin", rank = 2)]
+fn admin_panel_user(user: User) -&gt; &amp;'static str {
+    "Sorry, you must be an administrator to access this page."
+}
+
+#[get("/admin", rank = 3)]
+fn admin_panel_redirect() -&gt; Redirect {
+    Redirect::to(uri!(login))
+}
+<span class="boring">}</span></code></pre></pre>
+<p>直接上代码，告诉你为什么转发和守卫结合非常强大。
+上述代码，实现了只有SuperUser才可以访问admin_panel路由，而普通用户只能看到一个错误信息。
+而如果前两个函数没有任何一个成功，就会转发到admin_panel_redirect路由，因为它没有请求守卫，所以它可以100%成功地把失败的请求转发到login路由。</p>
+<h4 id="fallible-guards"><a class="header" href="#fallible-guards">Fallible Guards</a></h4>
+<p><em><strong>错误处理这块施工中，看得不是很懂</strong></em></p>
+<h3 id="cookies"><a class="header" href="#cookies">Cookies</a></h3>
+<p>CookieJar结构体是一种对多个cookie进行增改删的玩意。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <a rel="prev" href="../rocket/rocket.html" class="mobile-nav-chapters previous"
+                            title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+                        <a rel="next prefetch" href="../tools/index.html" class="mobile-nav-chapters next"
+                            title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                    <main>
+                        <hr>
+                        <div id="giscus-container"></div>
+                    </main>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                <a rel="prev" href="../rocket/rocket.html" class="nav-chapters previous" title="Previous chapter"
+                    aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+
+                <a rel="next prefetch" href="../tools/index.html" class="nav-chapters next" title="Next chapter"
+                    aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/giscus.js"></script>
+
+
+    </div>
+</body>
+
+</html>

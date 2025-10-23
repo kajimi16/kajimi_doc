@@ -1,0 +1,693 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+
+<head>
+    <!-- Book generated using mdBook -->
+    <meta charset="UTF-8">
+    <title>应用层 - KAJIMI_BOOK</title>
+
+
+    <!-- Custom HTML head -->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="icon" href="../favicon.svg">
+    <link rel="shortcut icon" href="../favicon.png">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/chrome.css">
+    <link rel="stylesheet" href="../css/print.css" media="print">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <!-- Highlight.js Stylesheets -->
+    <link rel="stylesheet" href="../highlight.css">
+    <link rel="stylesheet" href="../tomorrow-night.css">
+    <link rel="stylesheet" href="../ayu-highlight.css">
+
+    <!-- Custom theme stylesheets -->
+
+
+    <!-- Provide site root to javascript -->
+    <script>
+        var path_to_root = "../";
+        var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+    </script>
+    <!-- Start loading toc.js asap -->
+    <script src="../toc.js"></script>
+</head>
+
+<body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch (e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch (e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor"
+                            title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                            aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme"
+                            aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)"
+                            aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S"
+                            aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">KAJIMI_BOOK</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..."
+                            aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="第二章-应用层"><a class="header" href="#第二章-应用层">第二章 应用层</a></h1>
+<p>网络应用是计算机网络存在的理由。就像我们出门有网络结果没带手机一样，肯定是折磨的。
+这一节会把应用层的一些常用协议细细的切成臊子，讲解它们的原理和运用。</p>
+<h3 id="21-网络应用原理"><a class="header" href="#21-网络应用原理">2.1 网络应用原理</a></h3>
+<p>试想你是一个成功的哈工大人，成功就业或者深造。为了完成老板的任务，你现在要写一个网络应用。<br />
+现在是你写程序的时候了，你发现你只要用某种高级编成语言写一个软件并调用其他层提供的服务就行，显然，分层发力了。所以，我们现在要了解到的是哪些呢？</p>
+<h4 id="211-网络应用体系结构"><a class="header" href="#211-网络应用体系结构">2.1.1 网络应用体系结构</a></h4>
+<p><strong>应用体系结构</strong>规定了如何在多个端系统上组织该应用程序。说人话，就是多个端系统上的应用程序怎么合作的。<br />
+目前流行的有两种</p>
+<ol>
+<li><strong>客户-服务端体系结构</strong>
+<ul>
+<li>实际上，目前大部分应用程序都是这么组织的。在这个结构中，有一个必须总是打开的端系统————<strong>服务器</strong>，它接受其他被称为<strong>客户</strong>的主机的请求并进行设计好的响应。<br />
+在这种体系结构下，客户不直接通信，而是经服务器过手。<br />
+另外，服务器一般有固定的地址，被叫做<strong>IP地址</strong><br />
+Web，FTP，Telent和电子邮件都是基于客户-服务器结构体系</li>
+</ul>
+</li>
+<li><strong>P2P体系结构</strong>
+<ul>
+<li>而P2P体系结构就截然不同了，在它的体系里只有对等方，每个主机既是服务器也是客户（很显然P2P没有或几乎不依赖<strong>服务器</strong>）<br />
+这种体系结构提供了很有魅力的特性————<strong>自拓展性</strong>，简单来说，对等越多，客户越多，但是服务器也越多，所以提供服务的能力也会加强。</li>
+</ul>
+</li>
+</ol>
+<h4 id="212-进程通信"><a class="header" href="#212-进程通信">2.1.2 进程通信</a></h4>
+<p>用操作系统的说法，进行通信的其实是进程，简单来说就是运行在端系统的程序。那我们的网络应用肯定是要在不同的端系统上面通信。<br />
+不同端系统上面的进程通过交换<strong>报文</strong>进行交互，一方面，发送进程生成并发送报文，另一方面，接收进程接收报文并可能通过报文回应。</p>
+<p>首先，我们可以发现，无论什么体系结构，都有发起通信的<strong>客户</strong>角色和等待联系的<strong>服务器</strong>。网络应用程序是成对存在的进程组成的。<br />
+然后呢，我们的报文需要进程通过<strong>套接字</strong>的软件接口发送和接收。我们可以想象进程是一个房子，那么套接字就是门，报文进出必须经过它。<br />
+套接字作为应用程序和网络之间的<strong>应用程序接口（API）</strong>，你可以通过编程控制它应用层的一切，但在运输层，你最多选择运输层协议和设定一些参数（最大缓存之类的）<br />
+接下来，报文被通过套接字丢出门了，我们需要明确它被运到哪里。显然，每个主机刚好有自己的<strong>IP地址</strong>，好巧不巧，我们的主机又有不同的<strong>端口号</strong>来放不同的套接字，接受不同网络服务的报文。</p>
+<h4 id="213-可供应用程序使用的运输服务"><a class="header" href="#213-可供应用程序使用的运输服务">2.1.3 可供应用程序使用的运输服务</a></h4>
+<p>一个运输层协议一般从四个方面被要求</p>
+<ol>
+<li>可靠数据传输： 能保证报文无差错地到达其他端系统说是（<strong>容忍丢失的应用</strong>不需要它）</li>
+<li>吞吐量： 交付比特的速率（<strong>带宽敏感的应用</strong>要求一定的带宽才能跑，而<strong>弹性应用</strong>不需要）</li>
+<li>定时：确保延迟在一定范围内（比如网游和网络电话）</li>
+<li>安全性：数据不被偷</li>
+</ol>
+<h4 id="214-因特网提供的运输服务"><a class="header" href="#214-因特网提供的运输服务">2.1.4 因特网提供的运输服务</a></h4>
+<p>一般来说两种<strong>TCP服务</strong>和<strong>UDP服务</strong><br />
+<strong>TCP服务</strong>提供一些优势</p>
+<ul>
+<li>面向连接的服务：在报文发送前会先建立<strong>TCP连接</strong></li>
+<li>可靠的数据传输服务：它提供可靠数据传输（废话）</li>
+<li>拥塞控制服务：当网络拥塞时，抑制发送进程，同时控制TCP连接公平共享带宽</li>
+<li>运输层安全（TLS）：可以给TCP加上TLS，使发送的报文被加密，受到的报文被解密</li>
+</ul>
+<p><strong>UDP</strong>就不一样，它不提供不必要的服务，<strong>只是一味地发送报文</strong></p>
+<p>我们可以发现，两种服务加在一起只涉及了可靠数据运输和安全性，那我们的定时和吞吐量呢？实际上，并不提供，因为因特网证明了目前影响不大。</p>
+<h4 id="215-应用层协议"><a class="header" href="#215-应用层协议">2.1.5 应用层协议</a></h4>
+<p><strong>应用层协议</strong>规定了不同进程怎么互相传递报文</p>
+<ul>
+<li>交换的报文类型</li>
+<li>各种报文类型的语法</li>
+<li>字段的语义</li>
+<li>发送和响应报文的规则</li>
+</ul>
+<p>应用层协议是应用程序的重要部分。</p>
+<h4 id="216-本书涉及的网络应用"><a class="header" href="#216-本书涉及的网络应用">2.1.6 本书涉及的网络应用</a></h4>
+<p>接下来，我们会介绍5种重要应用</p>
+<ul>
+<li>Web</li>
+<li>电子邮件</li>
+<li>目录服务</li>
+<li>流式视频</li>
+<li>P2P</li>
+</ul>
+<h3 id="22-web和http"><a class="header" href="#22-web和http">2.2 Web和HTTP</a></h3>
+<p>你知道的，现象的我们每个人都已经离不开浏览器启动了（这里指浏览Web页面），它的按需操作为它打下了一片江山。</p>
+<h4 id="221-http概述"><a class="header" href="#221-http概述">2.2.1 HTTP概述</a></h4>
+<p>Web的应用层协议是<strong>超文本传输协议（HTTP）</strong><br />
+让我们先过一些术语：</p>
+<ul>
+<li>Web页面：我们看到的网页</li>
+<li>对象：页面的组成</li>
+<li>HTML基本文件：页面的底子，规定了其他对象怎么用</li>
+<li>URL：对象在的主机名+路径</li>
+<li>Web浏览器：实现HTTP的客户端</li>
+<li>Web服务器：实现HTTP的服务器端</li>
+</ul>
+<p>HTTP定义了Web客户向Web服务器请求Web页面的方式以及服务器向客户传输页面的方式<br />
+简单描述进入一个链接的过程</p>
+<ol>
+<li>HTTP客户向服务器发起TCP连接</li>
+<li>连接建立后，HTTP报文借助TCP连接运输</li>
+</ol>
+<p>目前HTTP有HTTP/1.0（初始版本）HTTP/1.1（最常用）HTTP/2（全新版本）
+HTTP是一个<strong>无状态协议</strong>，不会记录客户的信息，那么我们为什么有些网页可以保留我们的登陆信息之类的呢？（以后说）</p>
+<h4 id="222-非持续连接和持续连接"><a class="header" href="#222-非持续连接和持续连接">2.2.2 非持续连接和持续连接</a></h4>
+<p>前者每个对象开一个TCP连接，后者只用一个TCP连接</p>
+<p>采用非持续连接的HTTP实际上就是HTTP/1.0用的，我们知道，进入一个链接要先建立TCP连接，再发送请求报文，服务器再发送所需文件。
+我们将除了服务器发送文件的其他步骤叫做<strong>三次握手</strong></p>
+<ol>
+<li>客户发送TCP报文段请求连接</li>
+<li>服务器对客户发送报文段进行确认和回应</li>
+<li>客户对服务器进行确认的确认并顺便发送HTTP请求报文</li>
+</ol>
+<p>我们用**往返时间（RTT）**定义一次客户和服务器互动用的时间，所以三次握手+服务器响应HTTP请求报文一共是2个RTT<br />
+我们可以发现，非持续连接需要不停建立TCP连接，而这不仅使每个对象需要两倍RTT的交付时延，而且会对服务器造成负担（服务器需要給大量的客户端建立大量的TCP连接）</p>
+<p>而我们HTTP/1.1就运用了持续连接的操作。它在建立一个TCP连接后不断复用，其他对象甚至其他页面继续使用这个TCP连接，一段时间不使用后断开。</p>
+<h4 id="223-http报文形式"><a class="header" href="#223-http报文形式">2.2.3 HTTP报文形式</a></h4>
+<p>下面看一段HTTP响应报文</p>
+<pre><code>GET /somedir/page.html HTTP/1.1
+Host: www.someschool.edu
+Connection: close
+User-agent: Mozilla/5.0
+Accept-language: zh
+</code></pre>
+<p>报文的第一段是请求行，包含三个字段</p>
+<ol>
+<li>方法字段：有GET POST HEAD 等，表示对URL指向的服务器对象的操作
+<ul>
+<li>GET 获取对象</li>
+<li>POST 发送字段</li>
+<li>HEAD 要求服务器只用HTTP报文响应</li>
+<li>PUT 上传文件</li>
+<li>DELETE 删除文将</li>
+</ul>
+</li>
+<li>URL字段</li>
+<li>HTTP版本字段</li>
+</ol>
+<p>接下来是首部行</p>
+<ol>
+<li>Host指明了对象所在的主机</li>
+<li>Connection指明了请求完对象关闭TCP连接</li>
+<li>User-agent指明了用户代理（用的什么浏览器）</li>
+<li>Accept-language指明了用户需要什么语言的页面（没有就用默认）</li>
+<li>实际上还有很多其他内容</li>
+</ol>
+<p>接下来是空行和<strong>实体体</strong>
+实体体里面的内容通常是客户输入的内容，比如向搜索框里面打的字</p>
+<p>接下来看HTTP响应报文</p>
+<pre><code>HTTP/1.1 200 OK
+Connection: close
+Date: Tue, 18 Aug 2015 15:44:04 GMT
+Server: Apache/2.2.3 (CentOS)
+Last-Modified: Tue, 18 Aug 2015 15:11:03 GMT
+Content-Length: 6821
+Content-Type: text/html
+
+(data)
+...
+(data)
+(data)
+</code></pre>
+<p>第一行是<strong>初始状态行</strong>，它包含了</p>
+<ol>
+<li>协议版本字段</li>
+<li>状态码</li>
+<li>相应状态信息，常见的有
+<ul>
+<li>200 OK：请求成功</li>
+<li>301 Moved Permanently：对象被永久转移了</li>
+<li>400 Bad Request：无法理解请求</li>
+<li>404 Not Found：服务器没有该HTML</li>
+<li>505 HTTP Version Not Supported: 不支持对应的HTTP版本</li>
+</ul>
+</li>
+</ol>
+<p>接下来看首部行</p>
+<ol>
+<li>Connection指明了请求完对象关闭TCP连接</li>
+<li>Date表示发送报文的时间</li>
+<li>Server表明了服务器的类型</li>
+<li>Last-Modified表明对象最后修改的时间</li>
+<li>Content-Length表明对象的字节数</li>
+<li>Content-Type表明对象的类型</li>
+</ol>
+<h4 id="224-用户和服务器的交互cookie"><a class="header" href="#224-用户和服务器的交互cookie">2.2.4 用户和服务器的交互：cookie</a></h4>
+<p>欸，前面说过，服务器是无状态的，那么我们用户是怎么被跟踪并提供个性化服务的呢?<br />
+想必大家都在进入一些网站时被要求“接受饼干”<br />
+这个cookie有四部分</p>
+<ol>
+<li>HTTP响应报文的cookie首部行</li>
+<li>HTTP请求报文的cookie首部行</li>
+<li>客户端浏览器管理的cookie文件</li>
+<li>Web站点的数据库</li>
+</ol>
+<p>cookie的工作原理大概这样：</p>
+<ol>
+<li>kajimi第一次进入xxx.com,xxx.com的服务器在响应报文中加入<code>Set-Cookie: 识别码</code>首部行</li>
+<li>kajimi的浏览器看到Set-Cookie，在cookie文件里加入一行，包括主机名和识别码</li>
+<li>接下来在访问对应主机时，浏览器都会把cookie文件里面的内容提取并在HTTP请求报文里面加入<code>Cookie: 识别码</code></li>
+<li>服务器拿到识别码，从数据库里面拿到kajimi的信息，进行个性化服务</li>
+</ol>
+<h4 id="225-web缓存"><a class="header" href="#225-web缓存">2.2.5 Web缓存</a></h4>
+<p><strong>Web缓存器</strong>也叫<strong>代理服务器</strong>，它可以保存用户打开过的界面，改善应用程序的性能。
+简单描述它的用法</p>
+<ol>
+<li>浏览器建立到Web缓存器的TCP连接，发送HTTP请求报文</li>
+<li>Web缓存器检查有无对象副本，有则返回</li>
+<li>如果没有，Web缓存器建立和对应服务器的TCP连接，发送HTTP请求报文</li>
+<li>拿到对象后，生成副本并向用户返回对象</li>
+</ol>
+<p>可以注意到，Web缓存器，一方面提高了用户访问页面的速度，一方面降低了服务器的压力。<br />
+通过<strong>内容分发网络（CDN）</strong>（在地理上搭建Web缓存器），使大量流量被分散到各个地区，从而加强了访问网站的响应速度，降低了初始服务器的压力。</p>
+<p>有人不经发问了，那要是Web缓存器的对象是旧的怎么办？<br />
+有的兄弟有的，我们有<strong>条件GET</strong>，在请求报文里面加入<code>If-modified-since: 日期</code>  在Web缓存器被请求时，它会向初始服务器查询从该日期起，对象是否有改变，因为只是小的报文，该查询在没有改动的情况下几乎没有明显时延。</p>
+<h4 id="226-http2"><a class="header" href="#226-http2">2.2.6 HTTP/2</a></h4>
+<p>回想HTTP/1.1，它的持续连接很强，但是可能出现**队首阻塞（HOL阻塞）**的情况（比如一个对象特别大，把页面其他元素的家在卡住了）。<br />
+HTTP/1.1会打开新的TCP连接来应对这一情况，但这又加大了对服务器的压力。<br />
+为了解决对应的问题，HTTP/2使用了</p>
+<ol>
+<li><strong>HTTP/2成帧</strong>：把报文切割成小的帧，利用帧交错技术，把不同对象的帧交错发送，在达到目的地后再组装，使小对象不被大对象卡。</li>
+<li><strong>响应报文的优先次序和服务器推</strong>：一方面可以为响应分配优先级，另一方面可以提前解析HTML里面需要的对象，提前一起发送。</li>
+</ol>
+<p>其实还有HTTP/3处于开发阶段，基于基于UDP的QUIC，但又有HTTP/2的能力</p>
+<h3 id="23-因特网中的电子邮件"><a class="header" href="#23-因特网中的电子邮件">2.3 因特网中的电子邮件</a></h3>
+<p>在我们使用QQ，微信前，有一种应用程序已经存在并流行于因特网，那就是我们的电子邮件。
+电子邮件有三部分，<strong>用户代理</strong>、<strong>邮件服务器</strong>、<strong>简单邮件传输协议（SMTP）</strong></p>
+<h4 id="231-smtp"><a class="header" href="#231-smtp">2.3.1 SMTP</a></h4>
+<p>SMTP是互联网电子邮件的核心，我们来描述电子邮件发送的步骤</p>
+<ol>
+<li>kajimi打开邮件代理程序，提供了mijica的邮件地址，发送报文</li>
+<li>kajimi的用户代理把报文发到它的邮件服务器，放入报文队列</li>
+<li>SMTP客户发现了邮件，建立和mijica的邮件服务器的SMTP服务器的TCP连接</li>
+<li>SMTP握手后，发送报文，报文被放入mijica的邮箱</li>
+<li>mijica闲着没事打开用户代理，发现并接受报文</li>
+</ol>
+<p>在SMTP握手的过程中，发件人和收件人的信息被传递，接着报文内容被传递，我们可以看看例子：(S表示服务器，C表示客户)</p>
+<pre><code>S: 220 hamburger.edu  //服务器介绍自己
+C: HELO crepes.fr     //客户介绍自己
+S: 250 Hello crepes.fr, pleased to meet you          //确认收到
+C: MAIL FROM: &lt;alice@crepes.fr&gt;                      //客户介绍发件人
+S: 250 alice@crepes.fr ... Sender ok                 //确认收到
+C: PCRT TO: &lt;bob@hamburger.edu&gt;                      //客户介绍收件地址 
+S: 250 bob@hamburger.edu ... Recipient ok            //确认收到
+C: DATA                                              //接下来是内容
+S: 354 Enter mail, end with "." on a line by itself  //清开始你的表演
+C: Do you like Genshin Impact?
+C: How about Honkai:Star Rail?
+C: .                                     //结束
+S: 250 Message accepted for delivery     //确认收到
+C: QUIT                                  //结束连接
+S: 221 hamburger.edu closing connection  //确认收到
+</code></pre>
+<p>客户发送大写的SMTP命令，而服务器用<strong>回答码</strong>和<strong>可选的英文解释</strong>。</p>
+<h4 id="232-邮件报文格式"><a class="header" href="#232-邮件报文格式">2.3.2 邮件报文格式</a></h4>
+<p>而我们的邮件显然必须有一些信息给SMTP客户与服务器进行握手，比如：</p>
+<pre><code>From: alice@crepes.fr           //寄件人
+TO: bob@hamburger.edu           //收件人
+Subject: Searching for hobby.   //主一题
+</code></pre>
+<p>现在我们考虑用户代理和服务器之间的通道，在用户代理到服务器时，运用了SMTP或HTTP协议，有人不禁发问，为什么要先到自己的服务器，而不是直接给收件地址的服务器呢？<br />
+实际上，如果收件地址的服务器不可访问，经过中转可以不断重发，直到成功或确认有问题无法抵达为止。<br />
+现在看接收方，SMTP无法用于得到报文，部分用户代理用HTTP，而其他用<strong>因特网邮件访问协议（IMAP）</strong>。通过这些协议，收件人可以管理自己的邮件，删除邮件等。</p>
+<h3 id="24-dns互联网的目录服务"><a class="header" href="#24-dns互联网的目录服务">2.4 DNS：互联网的目录服务</a></h3>
+<p>就像我们每个人有名字，有绰号，有身份证号等，每个主机也有自己的标识方法。<br />
+一方面，主机有<strong>主机名</strong>，比如kajimi.com等，另一方面，主机也可以通过<strong>IP地址</strong>进行标识。<br />
+人类喜欢更拟人的主机名，而路由器更喜欢定长的IP地址，所以我们需要一个方法进行转化。</p>
+<h4 id="241-dns提供的服务"><a class="header" href="#241-dns提供的服务">2.4.1 DNS提供的服务</a></h4>
+<p><strong>域名系统（DNS）<strong>提供了注记名和IP地址转化的目录服务。<br />
+它是是一个由分层</strong>DNS服务器</strong>组成的分布式数据库，也是一个使得主机能够查询分布式数据库的应用层协议。<br />
+与一般的协议为应用提供服务不同，它一般为其他协议提供服务。借用一个例子描述它的工作：</p>
+<ol>
+<li>用户意图访问kajimi.com</li>
+<li>浏览器提取主机名，发送给同一台主机上的DNS应用客户端</li>
+<li>DNS客户向DNS服务器发送请求</li>
+<li>DNS服务器返回包含IP地址的报文</li>
+<li>浏览器获取IP地址，用于发起TCP连接</li>
+</ol>
+<p>除了这个服务外，DNS还提供其他服务</p>
+<ul>
+<li><strong>主机别名</strong>：因为有时候<strong>规范主机名</strong>太神秘，需要好记的主机别名，DNS可以查找主机别名对应法规范主机名和IP地址</li>
+<li><strong>邮件服务器别名</strong>:对于邮件服务器也可以进行相同操作</li>
+<li><strong>负载分配</strong>：因为一些用户多的站点有多个服务器，DNS可以循环返会这些地址，起到分摊的作用。</li>
+</ul>
+<h4 id="242-dns工作原理概述"><a class="header" href="#242-dns工作原理概述">2.4.2 DNS工作原理概述</a></h4>
+<p>在开发者和用户的视角，DNS是一个黑盒子，主机名进IP出，实际上它的结构异常复杂。<br />
+DNS的一种简单设计是一个DNS服务器承担所有工作，这显然是不可能的。它不仅不具有扩展性，还容易出问题。<br />
+事实上，<strong>DNS是因特网分布式数据库的典范</strong>。<br />
+DNS服务器有3种</p>
+<ol>
+<li><strong>根DNS服务器</strong>
+<ul>
+<li>大概1000个遍布全球，13个不同根服务器副本，12个组织管理</li>
+<li>提供TLD服务器的IP地址</li>
+</ul>
+</li>
+<li><strong>顶级域DNS服务器（TLDDNS服务器）</strong>
+<ul>
+<li>com，org,gov等以及各国的cn，uk，jp等这些顶级域的TLD服务器</li>
+<li>提供归属的权威DNS服务器的IP地址</li>
+</ul>
+</li>
+<li><strong>权威DNS服务器</strong>
+<ul>
+<li>每个拥有公共可访问主机的组织必须提供公共可访问的DNS记录，权威DNS服务器负责保存这些记录，里面包含了主机名和IP地址的关系。</li>
+<li>组织可以选择自己实现权威DNS服务器，也可以付费将DNS记录存在服务商的权威服务器里。</li>
+</ul>
+</li>
+<li><strong>本地DNS服务器</strong>
+<ul>
+<li>实际上不属于层次，一般是离主机特别近的，由ISP提供，起到代理的作用。</li>
+</ul>
+</li>
+</ol>
+<p>想象一下查询主机doc.kajimi.edu的IP地址，假设你主机叫aaa.nya.edu，你的本地DNS服务器叫dns.nya.edu</p>
+<ol>
+<li>aaa.nya.edu向dns.nya.edu发送DNS查询报文，里面有主机名doc.kajimi.edu</li>
+<li>dns.nya.edu向根DNS服务器发送该报文，根DNS服务器注意到edu，返回edu的TLD服务器的IP地址列表</li>
+<li>dns.nya.edu向edu的TLD服务器发送该报文，edu的TLD服务器注意到kajimi.edu，返回权威DNS服务器的IP地址</li>
+<li>dns.nya.edu向权威DNS服务器发送该报文，得到doc.kajimi.edu的IP地址</li>
+<li>dns.nya.edu向你的主机aaa.nya.edu返回这个IP地址</li>
+</ol>
+<p>当然，很有可能不能一次直接到达包含指定DNS记录的权威DNS服务器，一般要中转几次。并且DNS查询不强制要求<strong>递归查询</strong>（把后续的查询交给其他DNS服务器，如1）或<strong>迭代查询</strong>（自己拿到IP地址再自己继续查询，如2,3,4）。</p>
+<p><strong>DNS缓存</strong>也是DNS系统的一个特色，和Web缓存器的用处差不多，在本地DNS服务器里面保存近期得到的DNS记录。也可以缓存TLD服务器的IP地址，绕过根DNS服务器。</p>
+<h4 id="243-dns记录和报文"><a class="header" href="#243-dns记录和报文">2.4.3 DNS记录和报文</a></h4>
+<p>所有的DNS服务器存储了<strong>资源记录（RR）</strong>，RR提供了主机名到IP地址的映射。DNS回答报文里有一到多条RR。<br />
+资源记录是一个4元组<code>(Name, Value, Type, TTL)</code></p>
+<ul>
+<li>TTL决定了资源记录从缓存里删除的时间</li>
+<li>Type决定了Name和Value的意义
+<ul>
+<li>Type = A  Name是主机名 Value是IP地址</li>
+<li>Type = NS   Name是域 Value是能获得该域中主机的权威DNS服务器的IP地址</li>
+<li>Type = CNAME Name是主机别名 Value是规范主机名</li>
+<li>type = MX Name是邮件服务器的别名 Value是规范主机名</li>
+</ul>
+</li>
+</ul>
+<p>DNS只有查询报文和回答报文，并且只有一种格式</p>
+<ul>
+<li>首部区域
+<ul>
+<li>一共12字节（96比特）</li>
+<li>第一个字段<strong>标识符</strong>（16比特）标识查询，会被复制到回答报文以匹配请求和回答</li>
+<li>第二个字段<strong>标志位</strong>
+<ul>
+<li><strong>查询/回答</strong>（1比特）0是查询 1是回答</li>
+<li><strong>权威的</strong>（1比特）1是权威</li>
+<li><strong>希望递归</strong>（1比特）1是希望</li>
+<li><strong>递归可用</strong>（1比特）1是可用</li>
+</ul>
+</li>
+<li>还有4个<strong>问题数 回答RR数 权威RR数 附加RR数</strong>，记录了接下来4个数据区域出现的数量</li>
+</ul>
+</li>
+<li>问题区域
+<ul>
+<li>名字字段：被查的主机</li>
+<li>类型字段：Type是哪个</li>
+</ul>
+</li>
+<li>回答区域
+<ul>
+<li>最初请求名字的资源记录</li>
+</ul>
+</li>
+<li>权威区域
+<ul>
+<li>其他权威服务器的记录</li>
+</ul>
+</li>
+<li>附加区域
+<ul>
+<li>额外有帮助的信息，比如MX请求的回答报文的附加区域会有规范主机名的类型A的记录</li>
+</ul>
+</li>
+</ul>
+<p>现在我们已经知道DNS的查询的全流程了，那我们怎么往DNS数据库里面添加记录呢？<br />
+我们需要向<strong>注册登记机构</strong>提供域名与IP地址，以及基本和辅助权威DNS服务器的名字与IP地址，注册机构会把各种记录插入DNS系统里。</p>
+<h4 id="25-p2p文件分发"><a class="header" href="#25-p2p文件分发">2.5 P2P文件分发</a></h4>
+<p>这里讲得非常干，简单来说，P2P体系结构可以通过自扩展性让<strong>每个对等方享受服务同时提供服务</strong>（比如P2P体系结构的文件分发应用可以让每个下载的对等同时上传已经下载好的部分给其他对等）<br />
+<strong>BitTorrent</strong>是一种流行的P2P协议，它将所有对等方叫做<strong>洪流</strong>。在洪流中，文件被拆分为<strong>块</strong>在对等方间互相运输，我们也简单描述一些该协议怎么工作</p>
+<ol>
+<li>洪流的<strong>追踪器</strong>跟踪洪流中的对等方</li>
+<li>一个新的对等方加入洪流，向追踪器注册集资，并获取追踪器提供的多个对等方IP地址，建立TCP连接，成为<strong>邻近对等方</strong>（下文用邻居简称）</li>
+<li>对等方会定期查看其他邻居有哪些块，按照<strong>最稀缺优先</strong>获取最稀有的块</li>
+<li>对等方会获取邻居向它发送比特的速率，选取最快的四个邻居（被叫做<strong>疏通</strong>）回馈比特，每10s一换</li>
+<li>同时每30s，新对等方还会随机选择一个邻居发送数据，试图发现更好的邻居，以不断优化自己的疏通。</li>
+</ol>
+<p>这种机制被叫做<strong>一报还一报</strong>，是BitTorrent的优势。</p>
+<h3 id="26-视频流和内容分发网"><a class="header" href="#26-视频流和内容分发网">2.6 视频流和内容分发网</a></h3>
+<p>毫无疑问，我们需要刷视频。</p>
+<h4 id="261-因特网视频"><a class="header" href="#261-因特网视频">2.6.1 因特网视频</a></h4>
+<p>视频最大的特色是大，对于平均吞吐量的要求极高，通常我们会把视频压缩成不同的画质来给不同网络条件的客户提供视频。</p>
+<h4 id="262-http流和dash"><a class="header" href="#262-http流和dash">2.6.2 HTTP流和DASH</a></h4>
+<p>简单来说，视频也是通过HTTP来运输，但HTTP的运输没法动态地根据用户的带宽切换，所以我们有<strong>经HTTP的动态适应性流（DASH）</strong><br />
+用了DASH后，HTTP服务器里面会有<strong>告示文件</strong>，里面写了不同的视频版本和需要的带宽。视频被切成块，通过测量实时带宽并通过<strong>速率选择算法</strong>决定下次拿哪个版本的块。</p>
+<h4 id="263-内容分发网"><a class="header" href="#263-内容分发网">2.6.3 内容分发网</a></h4>
+<p>我们知道，现在我们有很多世界流行的视频app，这么多的视频配合世界各地的请求，要怎么保证每个人都能看视频？<br />
+几乎所有的视频流视频网站都利用**内容分发网（CDN）**来管理全球各地的服务器，把每个用户的请求定向到最适合的服务器。<br />
+CDN有两种服务器安置原则</p>
+<ol>
+<li><strong>深入</strong>，用高度深入的分布式设计，让大量服务器分布在世界各地，尽可能靠近所有的端系统。</li>
+<li><strong>邀请做客</strong>，把服务器大量丢在IXP，降低维护和管理开销。用户体验不如前者。</li>
+</ol>
+<p>CDN对于视频在不同服务器的存储操作和前面的Web缓存器很像，也是把视频拿到服务器，同时存储副本，对于不常用的视频进行删除。<br />
+而对于重定向的操作，CDN通过DNS来截获以及重定向对视频的请求。</p>
+<ol>
+<li>首先，每个视频的URL都有独特标识</li>
+<li>当视频网站的权威DNS拿到带有独特标识的请求后，返回CDN专用的DNS基础设施。</li>
+<li>向CDN专用的DNS基础设施发出请求，拿到分配的CDN服务器IP地址</li>
+<li>从指定CDN服务器拿到视频。</li>
+</ol>
+<p>而在步骤3中，CDN基于用户的IP地址按照<strong>集群选择策略</strong>分配了合适的CDN服务器。
+通常<strong>地理上最为邻近</strong>是一个简单且实用的策略，但有时地理上邻近不代表网络上近，同时存在用的本地DNS远离客户的情况，并且忽略了网络的情况。
+而一些CDN会对客户和CDN服务器之间的时延进行<strong>实时测量</strong>，选择最优解，但部分本地DNS不接受测量（</p>
+<h4 id="264-学习案例-netflix-youtube"><a class="header" href="#264-学习案例-netflix-youtube">2.6.4 学习案例 Netflix Youtube</a></h4>
+<p>Netflix的亚马逊云会获取视频并进行处理，获得不同版本，运用DASH协议提供视频。<br />
+对于视频的分发，它会在非高峰时段自动拉取流行的视频，放入CDN服务器，而不是高速缓存未命中后现场获取。<br />
+同时它不用DNS重定向来连接客户和服务器，而是直接通过软件告知分配的CDN服务器。</p>
+<p>Youtube使用DNS重定向，使用高速缓存未命中后现场获取。并且不运用DASH，而是让用户自己选择视频质量，用HTTP运输。</p>
+<h3 id="27-套接字编程-生成网络应用"><a class="header" href="#27-套接字编程-生成网络应用">2.7 套接字编程： 生成网络应用</a></h3>
+<p>首先，我们知道网络应用程序按照使用的应用层协议公开与否分为两种。</p>
+<ul>
+<li>有协议标准定义的操作实现的应用程序遵循RFC的规则，互相可以实现通信。</li>
+<li>而专用的网络应用程序使用独立且不公开的协议，其他开发者无法写出与之交互代码。</li>
+</ul>
+<h4 id="271-udp套接字编程"><a class="header" href="#271-udp套接字编程">2.7.1 UDP套接字编程</a></h4>
+<p>接下来就是读代码</p>
+<pre><code class="language-py">#UDPClient.py
+from socket import *      #引入socket
+serverName = 'hostname'   #设置服务器
+serverPort = 12000        #设置端口号
+clientSocket = socket(AF_INET, SOCK_DGRAM)  #创建套接字 参数分别指示使用IPv4和UDP
+message = raw_inupt('Input here:')          #输入
+clientSocket.sendto(message.encode(),(ServerName, serverPort))  #转化输入为字节，向套接字发送分组
+modifiedMessage, serverAddress = clientSocket.recvfrom(2048)    #得到返回的分组和服务器地址
+print(modifiedMessage.decode())                                 #输出大写化的输入
+clientSocket.close()   #关闭套接字
+</code></pre>
+<pre><code class="language-py">#UDPServer.py
+from socket import *      #引入socket
+serverPort = 12000        #设置端口号
+serverSocket = socket(AF_INET, SOCK_DGRAM)  #创建套接字 参数分别指示使用IPv4和UDP
+serverSocket.bind(('', serverPort))         #分配给套接字端口号
+while True:
+    message, clientAddress = serverSocket.recvfrom(2048)         #获取分组和客户IP地址
+    modifiedMessage = message.decode().upper()                   #大写化
+    serverSocket.sendto(modifiedMessage.encode(), clientAddress) #返回分组
+</code></pre>
+<h4 id="272-tcp套接字编程"><a class="header" href="#272-tcp套接字编程">2.7.2 TCP套接字编程</a></h4>
+<p>与UDP不同的是，TCP连接的建立会生成一个新的套接字（<strong>连接套接字</strong>），而三次握手用的是<strong>欢迎套接字</strong>
+接下来就是读代码</p>
+<pre><code class="language-py">#TCPClient.py
+from socket import *      #引入socket
+serverName = 'hostname'   #设置服务器
+serverPort = 12000        #设置端口号
+clientSocket = socket(AF_INET, SOCK_STREAM)    #创建套接字 参数分别指示使用IPv4和TCP
+clientSocket,connect((serverName,serverPort))  #建立连接
+sentence = raw_input("Input here")    #输入
+clientSocket.send(sentence.encode())  #发送
+modifiedMessage, serverAddress = clientSocket.recvfrom(2048)    #获取返回的分组和服务器地址
+print(modifiedMessage.decode())                                 #输出大写化的输入
+clientSocket.close()   #关闭套接字
+</code></pre>
+<pre><code class="language-py">#TCPServer.py
+from socket import *      #引入socket
+serverPort = 12000        #设置端口号
+serverSocket = socket(AF_INET, SOCK_STREAM)  #创建套接字 参数分别指示使用IPv4和UDP
+serverSocket.bind(('', serverPort))          #分配给套接字端口号
+server.listen(1)          #等待握手，最大连接数为1
+while True:
+    connectionSocket, addr = serverSocket.accept()  #得到连接套接字
+    sentence = connectionSocket.recv(1024).decode() #处理分组为字符串
+    ans = sentence.upper()                          #大写
+    connectionSocket.send(ans.encode())             #发送 
+    connectionSocket.close( )                       #关闭
+</code></pre>
+<h3 id="28-小结"><a class="header" href="#28-小结">2.8 小结</a></h3>
+<p>不想写了woc，写了一天这个博客，越写越有了</p>
+<p>写于 2025 年 1 月 27 日 00:00</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <a rel="prev" href="../Top-Down_Approach/Chapter1.html" class="mobile-nav-chapters previous"
+                            title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+                        <a rel="next prefetch" href="../Top-Down_Approach/Chapter3.html" class="mobile-nav-chapters next"
+                            title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                    <main>
+                        <hr>
+                        <div id="giscus-container"></div>
+                    </main>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                <a rel="prev" href="../Top-Down_Approach/Chapter1.html" class="nav-chapters previous" title="Previous chapter"
+                    aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+
+                <a rel="next prefetch" href="../Top-Down_Approach/Chapter3.html" class="nav-chapters next" title="Next chapter"
+                    aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/giscus.js"></script>
+
+
+    </div>
+</body>
+
+</html>

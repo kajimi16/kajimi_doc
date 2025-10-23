@@ -1,0 +1,391 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+
+<head>
+    <!-- Book generated using mdBook -->
+    <meta charset="UTF-8">
+    <title>简单数学 - KAJIMI_BOOK</title>
+
+
+    <!-- Custom HTML head -->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="icon" href="../favicon.svg">
+    <link rel="shortcut icon" href="../favicon.png">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/chrome.css">
+    <link rel="stylesheet" href="../css/print.css" media="print">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <!-- Highlight.js Stylesheets -->
+    <link rel="stylesheet" href="../highlight.css">
+    <link rel="stylesheet" href="../tomorrow-night.css">
+    <link rel="stylesheet" href="../ayu-highlight.css">
+
+    <!-- Custom theme stylesheets -->
+
+
+    <!-- Provide site root to javascript -->
+    <script>
+        var path_to_root = "../";
+        var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+    </script>
+    <!-- Start loading toc.js asap -->
+    <script src="../toc.js"></script>
+</head>
+
+<body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch (e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch (e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor"
+                            title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                            aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme"
+                            aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)"
+                            aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S"
+                            aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">KAJIMI_BOOK</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..."
+                            aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="数学入门"><a class="header" href="#数学入门">数学入门</a></h1>
+<h3 id="简单数学模拟"><a class="header" href="#简单数学模拟">简单数学模拟</a></h3>
+<h3 id="最大公约数-最小公倍数"><a class="header" href="#最大公约数-最小公倍数">最大公约数 最小公倍数</a></h3>
+<h5 id="欧几里得算法辗转相除法"><a class="header" href="#欧几里得算法辗转相除法">欧几里得算法（辗转相除法）</a></h5>
+<p><code>gcd(a,b)=gcd(b, a%b);</code>
+b==0时return b;
+最小公倍数 = a / gcd * b;</p>
+<h3 id="分数"><a class="header" href="#分数">分数</a></h3>
+<p>用 struct 存 up分子 down分母
+分子为0分母为1
+分母为负上下取相反数
+化简上下同除gcd
+加减乘除进行模拟
+分子分母最好用LL保存（乘法可能越界）</p>
+<h3 id="质数"><a class="header" href="#质数">质数</a></h3>
+<h5 id="埃氏筛"><a class="header" href="#埃氏筛">埃氏筛</a></h5>
+<p>一个存储质数的数组
+一个存储取值范围内每个数是不是质数的bool数组
+从遍历取值范围，如果是质数，那么把所有范围内它的质数标记为合数
+<code>for(int j = i*i; j &lt;= max; j+=i);</code></p>
+<h5 id="质因子分解"><a class="header" href="#质因子分解">质因子分解</a></h5>
+<p>用struct factor存质因子和出现次数
+开到10就够了，因为10个就超过int了
+遍历之前的质数表（&lt; sqrt(num)），不断用输入的数字除以，如果遍历完还不为0
+说明还剩余一个本身目前的值</p>
+<h3 id="高精度"><a class="header" href="#高精度">高精度</a></h3>
+<p>大数字可以开成struct 存贮数组和长度
+加入构造函数进行初始化</p>
+<h5 id="高精度加法"><a class="header" href="#高精度加法">高精度加法</a></h5>
+<h5 id="高精度乘法"><a class="header" href="#高精度乘法">高精度乘法</a></h5>
+<h5 id="高精度减法"><a class="header" href="#高精度减法">高精度减法</a></h5>
+<p>记得用大的减小的
+记得去除前导0</p>
+<pre><code class="language-cpp">while (c.len - 1 &gt;= 1 &amp;&amp; c.d[c.len-1] == 0)
+{
+    c.len--;
+}
+</code></pre>
+<h5 id="高精度除法"><a class="header" href="#高精度除法">高精度除法</a></h5>
+<p>从高位开始
+每次carry 一个余数
+carry *10 + a.d[i];
+carry %= b;
+记得去除前导0</p>
+<h3 id="扩展欧几里得算法"><a class="header" href="#扩展欧几里得算法">扩展欧几里得算法</a></h3>
+<h5 id="求ax--by--gcdab的解"><a class="header" href="#求ax--by--gcdab的解">求ax + by = gcd(a,b)的解</a></h5>
+<pre><code class="language-cpp">int exGcd(int a, int b, int &amp;x, int &amp;y)
+{
+    if (b == 0)
+    {
+        x= 1; y = 0;
+        return a;
+    }
+    int g = exGcd(b, a % b, x, y);
+    int temp = x;
+    x = y;
+    y = temp - a / b * y;
+    return g;
+    
+}
+</code></pre>
+<p>得到的x y 为特解
+x = x + (b / gcd(a,b)) * 任意整数
+y = y - (a / gcd(a,b)) * 任意整数</p>
+<h5 id="ax--by--c"><a class="header" href="#ax--by--c">ax + by = c</a></h5>
+<p>如果<code>c % gcd(a,b) == 0</code>
+特解x,y为 exgcd结果*(c/gcd(a,b))
+x = x + (b / gcd(a,b)) * 任意整数
+y = y - (a / gcd(a,b)) * 任意整数</p>
+<h5 id="同余式ax-cm--0"><a class="header" href="#同余式ax-cm--0">同余式(ax-c)%m == 0</a></h5>
+<p>化为 ax + my = c 求解
+同样如果<code>(c % gcd(a,m) == 0)</code>有解，且恰好有gcd(a,m)个mod m意义下不同的解；
+特解x,y为 exgcd结果*(c/gcd(a,m))
+x = x + (m / gcd(a,m)) * 任意整数
+y = y - (a / gcd(a,m)) * 任意整数</p>
+<h5 id="逆元的求解与bam的计算"><a class="header" href="#逆元的求解与bam的计算">逆元的求解与(b/a)%m的计算</a></h5>
+<p>逆元：(ab-1)%m == 0;a b互为逆元
+(b / a )% m = (b * x) % m; a x互为逆元
+通过求解(ax - 1)%m==0得到逆元x
+如果 1%gcd(a,m)为0就有唯一解</p>
+<h5 id="费马小定理"><a class="header" href="#费马小定理">费马小定理</a></h5>
+<p>如果m是素数，a为任意整数且a%m!=0,那么<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mord">%</span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>
+所以逆元就是<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span><span class="mbin mtight">−</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span>用快速幂很快就能得到答案</p>
+<h5 id="如果都失效怎么办"><a class="header" href="#如果都失效怎么办">如果都失效怎么办</a></h5>
+<p>(b / a) % m = (b % (am)) / a;</p>
+<h3 id="组合数"><a class="header" href="#组合数">组合数</a></h3>
+<h5 id="求n里面的质因子p数目"><a class="header" href="#求n里面的质因子p数目">求n！里面的质因子p数目</a></h5>
+<p>朴素思想遍历1~n
+简化一
+n!里面质因子数量 = <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1765em;vertical-align:-0.4811em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6954em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">p</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4811em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1765em;vertical-align:-0.4811em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6954em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">p</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7463em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4811em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.313em;"></span><span class="minner">⋯</span></span></span></span>
+可以求0的数量（5的数量）</p>
+<h5 id="组合数的计算"><a class="header" href="#组合数的计算">组合数的计算</a></h5>
+<ul>
+<li>朴素模拟21！直接爆</li>
+<li>实际上C(m,n)=C(m,n-1)+C(m-1,n-1);
+用数组存储结果</li>
+<li>也可以牺牲范围用定义式的变形</li>
+</ul>
+<pre><code class="language-cpp">LL C(LL n, LL m)
+{
+    LL ans = 1;
+    for (LL i = 1;i &lt;= m; i++)
+    {
+        ans = ans * (n - m + i) / i;
+    }
+    return 0;
+}
+</code></pre>
+<h5 id="组合数的计算p"><a class="header" href="#组合数的计算p">组合数的计算%p</a></h5>
+<h6 id="方法一-n-1e5-m-1e5"><a class="header" href="#方法一-n-1e5-m-1e5">方法一 n-1e5 m-1e5</a></h6>
+<p>递推的每一步%p</p>
+<h6 id="方法二-n-1e6-m-1e6"><a class="header" href="#方法二-n-1e6-m-1e6">方法二 n-1e6 m-1e6</a></h6>
+<p>对定义式进行计算
+C(m,n) = n! / m! (n - m)!
+计算每个阶乘的每个质因子的数量，用快速幂得到每个质因子次方%p的数量再%p</p>
+<h6 id="方法三-n-1e9-m-1e5-p-prime"><a class="header" href="#方法三-n-1e9-m-1e5-p-prime">方法三 n-1e9 m-1e5 p-prime</a></h6>
+<p>对定义式的变形计算
+m &lt; p p为质数</p>
+<pre><code class="language-cpp">int C(int n, int m, int p)
+{
+    int ans = 1;
+    for (int i = 1; i &lt;= m; i++)
+    {
+        ans = ans * (n - m + i) % p;
+        ans = ans * inserve(i,p) %p;
+    }
+    return ans;
+}
+</code></pre>
+<p>m &gt;= p p为素数
+先统计分子分母里面p的数量
+如果分子p比分母多，直接输出0
+如果一样多，去除p的成分，再正常计算逆元</p>
+<pre><code class="language-cpp">int C(int n, int m, int p){
+    int ans = 1; numP = 0;
+    for (int i = 1; i &lt;=m; i++)
+    {
+        int tmp = n-m+i;
+        while(tmp %p==0)
+        {
+            numP++;
+            tmp/=p;
+        }
+        ans = ans * tmp % p;
+        tmp = i;
+        while(tmp % p == 0){
+            numP--;
+            tmp/=p;
+        }
+        ans =ans * inverse(tmp, p) % p;
+    }
+    if (numP &gt; 0) return 0;
+    else return ans;
+}
+</code></pre>
+<p>如果p不是质数呢
+把p质因子分解，求出分子比分母多余的各个质因子，快速幂对这些多余质因子的乘积取余
+另一边去除所有质因子后对属于部分逆元计算
+也可以把分子分母全质因子分解，得到多余的质因子，进行运算取模。</p>
+<h6 id="方法四-n-1e18-m-1e18-p-prime-1e5"><a class="header" href="#方法四-n-1e18-m-1e18-p-prime-1e5">方法四 n-1e18 m-1e18 p-prime-1e5</a></h6>
+<pre><code class="language-cpp">int Lucas(int n, int m){
+    if (m == 0) return 1;
+    return C(n%p,m%p) * Lucas(n/p,m/p) % p;
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <a rel="prev" href="../algorithm/chapter_3.html" class="mobile-nav-chapters previous"
+                            title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+                        <a rel="next prefetch" href="../CSAPP/chapter0.html" class="mobile-nav-chapters next"
+                            title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                    <main>
+                        <hr>
+                        <div id="giscus-container"></div>
+                    </main>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                <a rel="prev" href="../algorithm/chapter_3.html" class="nav-chapters previous" title="Previous chapter"
+                    aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+
+                <a rel="next prefetch" href="../CSAPP/chapter0.html" class="nav-chapters next" title="Next chapter"
+                    aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/giscus.js"></script>
+
+
+    </div>
+</body>
+
+</html>

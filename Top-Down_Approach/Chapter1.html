@@ -1,0 +1,428 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+
+<head>
+    <!-- Book generated using mdBook -->
+    <meta charset="UTF-8">
+    <title>计算机网络和因特网 - KAJIMI_BOOK</title>
+
+
+    <!-- Custom HTML head -->
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="icon" href="../favicon.svg">
+    <link rel="shortcut icon" href="../favicon.png">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/chrome.css">
+    <link rel="stylesheet" href="../css/print.css" media="print">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../fonts/fonts.css">
+
+    <!-- Highlight.js Stylesheets -->
+    <link rel="stylesheet" href="../highlight.css">
+    <link rel="stylesheet" href="../tomorrow-night.css">
+    <link rel="stylesheet" href="../ayu-highlight.css">
+
+    <!-- Custom theme stylesheets -->
+
+
+    <!-- Provide site root to javascript -->
+    <script>
+        var path_to_root = "../";
+        var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+    </script>
+    <!-- Start loading toc.js asap -->
+    <script src="../toc.js"></script>
+</head>
+
+<body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch (e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch (e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor"
+                            title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                            aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme"
+                            aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                            aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)"
+                            aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S"
+                            aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">KAJIMI_BOOK</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..."
+                            aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="计算机网络和因特网"><a class="header" href="#计算机网络和因特网">计算机网络和因特网</a></h1>
+<p>相对于 CSAPP，这本书的开头就让我感受到压力倍增，它在 30 面的篇幅里面抛出了更多对我来说全新的专业名词，并且对其的解释经常发生耦合和互相解释的情况。<br />
+不过正如这本书说的,<strong>“如果你想在家庭聚会上一鸣惊人，看完第一章就应当由足够的知识来给家人和朋友留下一些深刻印象了”</strong><br />
+总之，这些知识只是纯粹给你留下一些初步的印象，前面的区域以后再来探索吧</p>
+<h3 id="11-什么是因特网"><a class="header" href="#11-什么是因特网">1.1 什么是因特网</a></h3>
+<h4 id="111-具体构成描述"><a class="header" href="#111-具体构成描述">1.1.1 具体构成描述</a></h4>
+<p>因特网就是一个连接了全世界数十亿计算设备的网络。<br />
+这些计算设备有传统的电脑，也有手机之类的移动设备，还有家用电器之类的非传统设备。<br />
+这些各种各样的计算设备被统称为<strong>主机</strong>或<strong>端系统</strong>，它们之间通过<strong>通信链路</strong>和<strong>分组交换机</strong>相互连接。<br />
+对于链路，它肯定是有传输速率的，以 bps（比特每秒）度量。而在端系统发送数据时，通常会将数据分段
+，再加上首部字节（一些类似于上下文的标记），形成的数据包就叫做<strong>分组</strong>。<br />
+而分组交换机就是接受通信链路传来的分组再把它通过另外一条通信链路发出去的设备，比如<strong>路由器和链路层交换机</strong><br />
+就像从一个工厂到另外一个工厂（端系统），中间货物（数据）被分装到不同的卡车（分组），经过高速公路（通信链路）和交叉口（分组交换机），最终到达目的地一样，分组通过的通信链路和分组交换机被叫做<strong>路径</strong>。<br />
+端系统通过<strong>因特网服务提供商（ISP）<strong>接入互联网，简单来说就是移动联通电信这些的运营商，你得向他们交钱来拿到互联网服务。<br />
+然后呢，我们知道，数据的传输需要一些通用的规矩，这些规矩被叫做</strong>协议</strong>，比如我们的 TCP/IP 协议，就是协议。<br />
+因为协议必须像一些共识一样才能发挥互联的作用（就像两个人必须有共通的语言才能交流一样），<strong>因特网标准</strong>产生了，一个叫 IETF 的组织研发了它，它们给出了一堆叫<strong>请求评论</strong>的官方文档，里面定义了各种协议。</p>
+<h4 id="112-服务描述"><a class="header" href="#112-服务描述">1.1.2 服务描述</a></h4>
+<p>讲了这么多，似乎和我们的日常生活没有什么强而有力的关联，那么我们从<strong>分布式应用</strong>的角度来讲（就是我们平时电脑手机里面的各种联网 app，它们一般涉及了各个端系统之间的交互）。<br />
+为了实现分布式应用的各种联网功能，端系统提供了<strong>套接字接口</strong>，规定了不同端系统的程序之间交接数据的方式。借用书里的类比，你像别人写信，但不能只写信，你害得写一些信要给谁，送到哪里，邮政编码之类的信息，才能让信送到。同理，数据也是一样的。</p>
+<h4 id="113-什么是协议"><a class="header" href="#113-什么是协议">1.1.3 什么是协议</a></h4>
+<p>你知道的的，详细的语言描述有时候不如来点比喻，用人类的比喻来说，很多人在找别人说事情前喜欢先发一句“在吗？”，再通过对面的反应来继续下文，要是对面没回或者发动了自动回复，那肯定就不能说事情了
+这种对于接受和回答的报文的采取的约定俗成的行为模式，就是<strong>协议</strong>。<br />
+网络协议就像是人类的协议一样，不同的设备按照协议的规矩进行交流进行互联网上的通信。<br />
+专业来说，<strong>协议</strong>定义了在两个或多个通信实体之间交换的报文的格式和顺序，以及报文的发送或接受以及其他事件所采取的操作。</p>
+<h3 id="12-网络边缘"><a class="header" href="#12-网络边缘">1.2 网络边缘</a></h3>
+<p>接下来，我们将从外到内粗略地遍历因特网这张巨大的网，在互联网边缘的肯定是我们的端系统了，我们通常听到的<strong>客户端和服务器</strong>，就是端系统的两种角色。<br />
+客户端就是我们常用的电脑手机之类的，各种应用程序运行在上面，而服务器通常是一些更加强大的设备，里面存储了许多的信息，并承担了这些信息发布的工作，这些信息包括我们联网得到的视频，图片，文章之类的。</p>
+<h4 id="121-接入网"><a class="header" href="#121-接入网">1.2.1 接入网</a></h4>
+<h5 id="家庭接入"><a class="header" href="#家庭接入">家庭接入</a></h5>
+<p>从边缘向内，接入网就是将端系统物理连接到<strong>边缘路由器</strong>（就是端系统到另一个端系统路径上的第一台路由器）的网络。<br />
+现在最流行的接入网有两种，<strong>数字用户线（DSL）<strong>和</strong>电缆</strong><br />
+以下内容开始包含不负责任的大胆猜想和各种不知名网页内容<br />
+简单来说就是给传统的有线座机的电话线加上了联网的功能，我们在家里加上<strong>DSL 调制解调器</strong>，把数字信号变成高频音，发送到电话公司的<strong>数字用户线接入复用器（DSLAM）</strong>，变回数字形式。这种额外功能是通过将电话信号分成 3 种频段</p>
+<ul>
+<li>高速下行信道 （50kHZ~1MHz）</li>
+<li>中速上行信道 （4kHz~50kHz）</li>
+<li>普通的双向电话信道（0~4kHz）
+这种把分割不同频率的信号并变成不同信息的操作让一条电话线兼具了电话和联网的功能，于是家里就连上网了。这种操作只能说省钱又省事。<br />
+<strong>电缆因特网接入</strong>则是利用了有线电视基础设施的电缆，那么进行类比，它的<strong>电缆调制解调器</strong>就相当于 DSL 调制解调器，**电缆调制解调器端接系统（CMTS）**就相当于 DSLAM<br />
+当然，还有一些其他宽带接入技术，比如</li>
+<li><strong>光纤到户（FTTH）</strong> 从本地中心局（类似于 CMTS 和 DSLAM 放在的地方）连一条光纤到一个地区，然后通过<strong>光纤分配器</strong>把一条光纤变成多条，分配给多个家庭。同样也有一个类似调制解调器的东西即<strong>光纤线路端接器</strong>把光信号和电信号进行转换</li>
+<li><strong>5G 固定式无线</strong>采用无线方式从供应商的基站发送数据，通过家里的调制解调器接收，再连到 WiFi 无限路由器上。</li>
+</ul>
+<h5 id="企业和家庭接入"><a class="header" href="#企业和家庭接入">企业（和家庭）接入</a></h5>
+<p>而在学校和家庭环境里，<strong>局域网（LAN）<strong>明显更加常见，最常见的（感觉是写书时最常见的）是</strong>以太网</strong>。就是我们学校机房里面那种有线的连接，把设备统一链接到以太网交换机，然后再接到路由器。<br />
+而基于 IEEE802.11 技术的无线 LAN 接入，说人话就是<strong>WiFi</strong>，才是真正无所不在。<br />
+现在毫无疑问，WiFi 已经走入家家户户了，现在的家庭网络通常由</p>
+<ul>
+<li><strong>无线接入点</strong>（与无线设备通信的基站）</li>
+<li><strong>无线路由器</strong>（无线接入点和其他无线设备与因特网相连的设备）</li>
+<li><strong>无线设备</strong>（手机，电脑，路由器，打印机等）</li>
+<li><strong>有线 PC</strong>（就是那种接网线的台式机）</li>
+</ul>
+<h5 id="广域无线接入"><a class="header" href="#广域无线接入">广域无线接入</a></h5>
+<p>简单理解就是俗称的移动数据（流量）东西，通过和蜂窝移动电话一样的基础设施，实现了随时随地联网的能力，现在我们已经有 3G、4G、5G 无线技术了。</p>
+<h4 id="122-物理媒介"><a class="header" href="#122-物理媒介">1.2.2 物理媒介</a></h4>
+<p>我们的数据在穿来穿去的过程中肯定需要一些媒介对吧，毕竟我们的电磁波或者光脉冲或者什么东西不能凭空传送对吧。<br />
+它们跨越的<strong>物理媒介</strong>被分为</p>
+<ul>
+<li><strong>导引型媒介</strong> （固体媒介，比如双绞铜线，光缆等）</li>
+<li><strong>非导引型媒介</strong>（空气或外层空间）</li>
+</ul>
+<p>书里主要介绍了五种</p>
+<ul>
+<li>双绞铜线 最便宜，最常见，最古老，电话线基本是双绞铜线</li>
+<li>同轴电缆 电视系统中最常见</li>
+<li>光纤 又快又稳定，被认为是因特网的主干，就是太贵了</li>
+<li>陆地无线电信道 不需要物理线路，可以穿墙，移动连接，</li>
+<li>卫星无线电信道 还在开发说是</li>
+</ul>
+<h3 id="13-网络核心"><a class="header" href="#13-网络核心">1.3 网络核心</a></h3>
+<p>你以为之前的已经够干了，实则后面还有更干的<br />
+我们继续深入计算机网络，现在我们的信息已经进入第一个路由器，我们来到更多分组交换机和通信链路组成的网络核心，一个网状网络。</p>
+<h4 id="131-分组交换"><a class="header" href="#131-分组交换">1.3.1 分组交换</a></h4>
+<p>在网络应用中，端系统彼此交换<strong>报文</strong>，它可以是控制用，也可以是数据，我们的分组就是被切块的报文。此事在上文已有记载</p>
+<h5 id="存储转发传输"><a class="header" href="#存储转发传输">存储转发传输</a></h5>
+<p>简单来说对于一个分组的传输，我们要先在路由器里面拿到它的所有比特（存储），再向下一条通信链路发送（转发）。<br />
+比如给目的地发一个分组，中间经过两条通信链路和一个路由器，假设我们忽略传播时延（在通信链路上传播的时间），只考虑传输时延（路由器发货信息需要的时间）并设置为 t，那么我们需要等 2t 时间而不是 t 时间，因为中间的路由器要求等到 t 秒时分组完全到达时再进行转发，接下来还要 t 时间发货，所以总共 2t 时间。</p>
+<h5 id="排队时延和分组丢失"><a class="header" href="#排队时延和分组丢失">排队时延和分组丢失</a></h5>
+<p>基于这种存储转发传输，我们可以注意到，分组交换机一定有一个<strong>输出缓存（输出队列）</strong>，因为传输时延的存在，其他的分组肯定要在输出缓存里面排队，等着被转发。这个等待的时延被叫做<strong>排队时延</strong>。<br />
+由于输出缓存肯定是有上限，那么溢出的分组很明显会<strong>分组丢失（丢包）</strong></p>
+<h5 id="转发表和路由选择协议"><a class="header" href="#转发表和路由选择协议">转发表和路由选择协议</a></h5>
+<p>有没有想过，这么多分组，分组交换机怎么知道该把它们送到哪里呢?<br />
+在因特网中，每个端系统拥有一个 IP 地址，而每个路由器有个<strong>转发表</strong>，里面记录了不同的目的地址要转发到哪条通信链路并到达哪个下一个路由器。<br />
+参考没有导航时期的问路，你在路上拉一个人，问某个人的家怎么去，路人可能先告诉你走哪条路到对应的大街，然后到那个街上再问，得到走哪个小巷，到小巷里再问，得到在哪个房间。就是这样的过程</p>
+<h4 id="132-电路交换"><a class="header" href="#132-电路交换">1.3.2 电路交换</a></h4>
+<p>上面说完分组交换了，现在来讲电路交换<br />
+电路交换里面，端系统之间的资源是预留的，比如传统的电话网络，两台设备之间是真的有一条电路的，也就是说网络链路上面已经预留好了带宽，可以以恒定速率传送数据。<br />
+那么回到电路交换网络，在不同的端系统间，网络会创建<strong>端到端连接</strong>，提前给了一条恒定速率的带宽，而不是像分组交换那样，需要在传输时延的存在下，让分组排队等待。</p>
+<h5 id="等量交换网络的复用"><a class="header" href="#等量交换网络的复用">等量交换网络的复用</a></h5>
+<p>电路交换网络肯定不是一条线就只能两条主机对吧，太低效了，我们有两种策略</p>
+<ul>
+<li><strong>频分复用（FDM）</strong> 为每个连接指定一个频段，就像电台的不同频段可以有不同的节目一样</li>
+<li><strong>时分复用（TDM）</strong> 每个连接指定一个时隙，在时隙里面传输指定的数据，比如每秒的 1/4 秒发不同端系统之间的信息这种</li>
+</ul>
+<h5 id="分组交换和电路交换的比较"><a class="header" href="#分组交换和电路交换的比较">分组交换和电路交换的比较</a></h5>
+<ul>
+<li>分组交换不适合实时服务，因为它可能因为排队时延产生我们常说的时延，而电路交换没有这种缺点</li>
+<li>而电路交换浪费了资源，因为它需要预留资源，在空闲时期，这些资源不能用于其他的连接 ，而分组交换可以调动所有的带宽去进行连接</li>
+</ul>
+<p>总体来看，分组交换占据上风</p>
+<ul>
+<li>假设用户活跃的概率是随机的，无论怎么样电路交换都只能提供为一定数量的端系统提供一定数量连接，而分组交换可以给更多端系统通过连接 （假设电路交换系统和分组交换系统都只能同时提供 10 个连接，假设特定用户活跃的概率是 10%，对于 35 个用户，同时有 11 个及以上用户进行连接的概率也只是 0.0004 左右，大部分情况下不会卡顿，而电路交换系统依旧只能 10 个用户）</li>
+<li>假设有一个用户突然产生了大量分组，而其他用户不活跃，分组连接可以调用所有带宽，而电路交换系统只能提供预留的带宽，这就造成了资源的浪费</li>
+</ul>
+<h4 id="133-网络的网络"><a class="header" href="#133-网络的网络">1.3.3 网络的网络</a></h4>
+<p>我们前面看到端系统通过接入 ISP 和因特网连接，但是毫无疑问，我们通常知道的移动，电信，联通，以及外国的 ISP 之间肯定存在连接，不然因特网的用户怎么在不同 ISP 提供服务的端系统之间互联呢？<br />
+按照发展进程我们逐渐完善现在的因特网网络结构</p>
+<ol>
+<li>单一的全球传输 ISP 连接所有小的 ISP，并且也把它们当成客户，收费来提供网络服务</li>
+<li>既然有利可图，那么全球的 ISP 肯定也不止有一个了，所以我们有了好几个伪全球 ISP，它们在最高层相互连接，形成一个全球 ISP</li>
+<li>既然向上已经满了，我们也可以在全球 ISP 和小的 ISP 之间插手，建立区域 ISP，给全球 ISP 钱，同时向下级的 ISP 提供收费服务</li>
+<li>在这样的多级节后上，我们再加入</li>
+</ol>
+<ul>
+<li>存在点（PoP） 提供客户 ISP 和提供商 ISP 的连接</li>
+<li>多宿 一个 ISP 上面可以有几个提供商 ISP</li>
+<li>对等 同级别的 ISP 之间进行免费的连接，保证了互联网的互联</li>
+<li>因特网交换点（IXP） 对等实现的地方</li>
+</ul>
+<ol start="5">
+<li>当然也有像谷歌这样的大手子，作为<strong>内容提供商网络</strong>，一方面尽可能和底层的 ISP 对等，绕过高层 ISP，另一方面也在必要情况下遵守全球 ISP 的管制，向它们交钱，获得网络服务</li>
+</ol>
+<h3 id="14-分组交换网的时延丢包和吞吐量"><a class="header" href="#14-分组交换网的时延丢包和吞吐量">1.4 分组交换网的时延、丢包和吞吐量</a></h3>
+<h4 id="141-分组交换网中的时延"><a class="header" href="#141-分组交换网中的时延">1.4.1 分组交换网中的时延</a></h4>
+<p>前面描述过一个分组从一个主机出发，经过路由器到另外一台主机的过程，那么在一个分组经历这个过程的途中，究竟遇到了哪些时延呢？</p>
+<ul>
+<li>处理时延 检查分组首部和决定该分组去哪里想要的时间是<strong>处理时延</strong>的一部分，还有其他像检查比特级别差错之类的时间也包括在内</li>
+<li>排队时延 分组在路由器的输出缓存里面等待画的时间</li>
+<li>传输时延 路由器对一个分组进行传输消耗的时间（或者说发射）</li>
+<li>传播时延 分组被传输后到下一个路由器的时间（运货的时间）</li>
+</ul>
+<p>整体来看这四个时延加起来，就是我们的节点时延，表示了一个分组从进入一个路由器到到达下一个路由器的总时长</p>
+<h4 id="142-排队时延和丢包"><a class="header" href="#142-排队时延和丢包">1.4.2 排队时延和丢包</a></h4>
+<p>对于排队时延，这里主要讲了一种衡量排队时延的统计量-&gt;<strong>流量强度</strong><br />
+假设分组到达队列的平均速率是 a 个分组每秒，传输速率是 R 比特每秒，分组平均大小是 L 比特，那么我们的流量强度就是 La/R<br />
+我们可以注意到，当流量强度大于 1 时，排队的队伍会越来越长，直到无穷大，所以对于<strong>设计系统时流量强度不能大于 1</strong><br />
+而实际上，假设有一个设计不那么好的系统，及时它的排队队伍有时候会一直变长，也不会趋于无穷大，这是因为输出缓存的大小是有限的，没有地方储存的分组会被路由器丢弃，这时就发生了分组丢包</p>
+<h4 id="143-端到端时延"><a class="header" href="#143-端到端时延">1.4.3 端到端时延</a></h4>
+<p>现在我们知道了节点时延，也就是单台路由器的时延了，那么对于一个端到端时延，它就是把所有的节点时延叠加起来
+为了理解端到端时延，我们有了 traceroute 程序，它可以抓取经过每个路由器的时延并且返回对应的信息，虽然我并没有进行一个尝试<br />
+并且这一节还指出在后面的章节还有一些其他的时延说是</p>
+<h4 id="144-计算机网络的吞吐量"><a class="header" href="#144-计算机网络的吞吐量">1.4.4 计算机网络的吞吐量</a></h4>
+<p>除了时延和丢包之外，衡量计算机网络的另外一个参数就是<strong>吞吐量</strong><br />
+实际上，这个吞吐量就是两个端系统间传输文件的速率<br />
+这里我们主要讨论吞吐量的重要影响因素————<strong>瓶颈链路</strong>，简单来说就是（短板效应），吞吐量取决于所有通信链路里面最速率最小的一条。<br />
+另外一方面，如果，链路被多个端到端连接使用，情况还需要重新讨论</p>
+<h3 id="15-协议层次及其服务模型"><a class="header" href="#15-协议层次及其服务模型">1.5 协议层次及其服务模型</a></h3>
+<p>显然，如果直接这样不断堆叠因特网的结构，计算机网络将变得难以组织，因此，这里也采用了一种叫做<strong>分层</strong>的方式来组织网络协议
+这里将继续插入大量个人理解：
+简单来说，分层的组织方式就是将系统的功能分到不同的层次，每个层次都可以使用下层的<strong>服务</strong>，同时向上层提供服务，将这样各层的协议叠加到一起，就是形成了<strong>协议栈</strong><br />
+因特网的协议栈由五个层次构成：</p>
+<ul>
+<li>应用层
+<ul>
+<li>网络应用程序和它们的应用层协议存在的地方，包括 HTTP SMTP FTP</li>
+<li>位于应用层的信息分组被叫做<strong>报文</strong></li>
+</ul>
+</li>
+<li>运输层
+<ul>
+<li>在应用程序之间传送应用层报文，包括 TCP UDP</li>
+<li>运输层的报文被叫做<strong>报文段</strong></li>
+</ul>
+</li>
+<li>网络层
+<ul>
+<li>将网络层分组从一台主机移动到另外一台主机，包括 IP</li>
+<li>网络层分组叫做<strong>数据报</strong></li>
+</ul>
+</li>
+<li>链路层
+<ul>
+<li>为了实现网络层的分组移动，需要链路层提供服务，包括 DOCSIS</li>
+<li>链路层分组被叫做帧</li>
+</ul>
+</li>
+<li>物理层
+<ul>
+<li>物理层负责实现实际传输媒介中比特的运输</li>
+</ul>
+</li>
+</ul>
+<h4 id="152-封装"><a class="header" href="#152-封装">1.5.2 封装</a></h4>
+<p>简单来说，数据在网络里面运输的过程就是不断在协议栈里面上上下下的过程<br />
+按我的理解就是每个节点得到数据后不断向上拆开，得到需要的信息后，再向下<strong>封装</strong>，最后实现运输<br />
+何意味呢？就是每一层的分组实际上具有两个部分<strong>首部字段</strong>（每个层给得到分组加上的信息）和<strong>有效载荷字段</strong>（上层送来的分组）</p>
+<p>封装其实就是加上首部字段的过程</p>
+<h3 id="16-面对攻击的网络"><a class="header" href="#16-面对攻击的网络">1.6 面对攻击的网络</a></h3>
+<p>刚开始的网络是一个乌托邦，大家抱着伟大的愿景看待网络，然而，现在网络，出现了所谓安全性的问题，因为出现了破坏网络安全的个体
+这里主要介绍了所谓黑客可以对网络干什么</p>
+<ol>
+<li>将<strong>恶意软件</strong>通过因特网放入个人计算机</li>
+<li>攻击服务器和网络基础设施，比如<strong>DoS 攻击</strong></li>
+<li>可以嗅探分组，比如通过<strong>分组嗅探器</strong>得到因特网上传递的分组</li>
+<li>可以伪装成其他用户，比如<strong>IP 哄骗</strong></li>
+</ol>
+<h3 id="17-计算机网络和因特网的历史"><a class="header" href="#17-计算机网络和因特网的历史">1.7 计算机网络和因特网的历史</a></h3>
+<p>纯纯装逼用，以后再看，方便我丢出一大堆人名和名词来提高逼格</p>
+<h3 id="18-小结"><a class="header" href="#18-小结">1.8 小结</a></h3>
+<p>这里想表达的意思就是<strong>放轻松，看不懂是很正常的</strong></p>
+<p>写于 2025 年 1 月 18 日 15:46:30</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <a rel="prev" href="../Top-Down_Approach/Chapter0.html" class="mobile-nav-chapters previous"
+                            title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+                        <a rel="next prefetch" href="../Top-Down_Approach/Chapter2.html" class="mobile-nav-chapters next"
+                            title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                    <main>
+                        <hr>
+                        <div id="giscus-container"></div>
+                    </main>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                <a rel="prev" href="../Top-Down_Approach/Chapter0.html" class="nav-chapters previous" title="Previous chapter"
+                    aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+
+                <a rel="next prefetch" href="../Top-Down_Approach/Chapter2.html" class="nav-chapters next" title="Next chapter"
+                    aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/giscus.js"></script>
+
+
+    </div>
+</body>
+
+</html>
