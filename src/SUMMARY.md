@@ -1,5 +1,5 @@
 # Summary
-
+- [自我介绍](./myself.md)
 - [算法笔记](./algorithm/chapter_0.md)
   - [查缺补漏](./algorithm/chapter_1.md)
   - [算法初步](./algorithm/chapter_3.md)
@@ -14,7 +14,9 @@
   - [现状](./Top-Down_Approach/situation.md)
 - [rocket*web 框架*初印象](./rocket/rocket.md)
   - [request](./rocket/rocket_request.md)
-- [化学笔记](./chemical_speed_run.md)
 - [你必须会玩的新时代玩具](./tools/readme.md)
   - [ai声音](./tools/sing.md)
 - [日志](./diary/y25-m01.md)
+- [做题区](./school/intro.md)
+  - [化学笔记](./school/chemical_speed_run.md)
+  - [大学物理B期中之有意思的题目](./school/2A_phicics/middle/错题.md)
