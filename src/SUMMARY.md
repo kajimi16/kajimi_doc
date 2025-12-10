@@ -20,3 +20,5 @@
 - [做题区](./school/intro.md)
   - [化学笔记](./school/chemical_speed_run.md)
   - [大学物理B期中之有意思的题目](./school/2A_phicics/middle/错题.md)
+  - [数字逻辑设计](./school/2A_diglogic/错题.md)
+  - [概率论与数理统计](./school/2A_maybe/错题.md)
